@@ -1,12 +1,5 @@
 Spree::Product.class_eval do
-  # delegate :url_helpers, to: 'Rails.application.routes' 
-
-  # include Rails.application.routes.url_helpers
-  # include ActionDispatch::Routing::UrlFor
-  # include Rails.application.routes.url_helpers
   include Spree::Core::Engine.routes.url_helpers
-
-  # has_one :job, as: :marketable, class_name: 'Spree::Job', dependent: :destroy
 
   after_save :create_marketing_job, if: :available_on_changed_and_is_present?
 
