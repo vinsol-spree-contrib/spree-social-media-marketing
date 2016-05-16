@@ -5,6 +5,9 @@ module Spree
 
     validates :page_id, uniqueness: {message: 'has already been added'}
     before_validation :get_and_assing_page_access_token
+    after_initialize :set_koala_client
+
+    attr_accessor :client
 
     def get_and_assing_page_access_token
       page_access_token_uri = URI("https://graph.facebook.com/#{ page_id }")
@@ -19,17 +22,16 @@ module Spree
     end
 
     def post_message(message)
-      posting_message_uri = URI("https://graph.facebook.com/#{ page_id }/feed")
-      posting_message_uri_query = { access_token: self.page_token, message: message }
-      response = Net::HTTP.post_form(posting_message_uri, posting_message_uri_query)
-      response_json = JSON.parse(response.body)
+      client.put_connections(self.page_id, 'feed', message: message)
     end
 
-    def post_image(url = '', caption = '')
-      posting_image_uri = URI("https://graph.facebook.com/#{ page_id }/photos")
-      posting_image_uri_query = { access_token: self.page_token, caption: caption, url: url }
-      response = Net::HTTP.post_form(posting_image_uri, posting_image_uri_query)
-      response_json = JSON.parse(response.body)
+    def post_image(source_binary, caption = '')
+      client.put_picture(source_binary, 'multipart/form-data', {message: caption, link: 'http://google.com'}, self.page_id)
     end
+
+    private
+      def set_koala_client
+        self.client = Koala::Facebook::API.new(self.page_token)
+      end
   end
 end

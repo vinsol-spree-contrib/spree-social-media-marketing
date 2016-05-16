@@ -7,7 +7,7 @@ Introduction goes here.
 
 1. Add this extension to your Gemfile with this line:
   ```ruby
-  gem 'spree-social-media-marketing', github: '[your-github-handle]/spree-social-media-marketing', branch: 'X-X-stable'
+  gem 'spree_social_media_marketing', github: '[your-github-handle]/spree-social-media-marketing', branch: 'X-X-stable'
   ```
 
   The `branch` option is important: it must match the version of Spree you're using.
@@ -20,7 +20,7 @@ Introduction goes here.
 
 3. Copy & run migrations
   ```ruby
-  bundle exec rails g spree-social-media-marketing:install
+  bundle exec rails g spree_social_media_marketing:install
   ```
 
 4. Restart your server
@@ -40,7 +40,7 @@ When testing your applications integration with this extension you may use it's 
 Simply add this require statement to your spec_helper:
 
 ```ruby
-require 'spree-social-media-marketing/factories'
+require 'spree_social_media_marketing/factories'
 ```
 
 

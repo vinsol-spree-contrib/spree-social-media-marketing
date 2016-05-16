@@ -1,7 +1,7 @@
 # encoding: UTF-8
 Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
-  s.name        = 'spree-social-media-marketing'
+  s.name        = 'spree_social_media_marketing'
   s.version     = '3.1.0.rc1'
   s.summary     = 'This gem is to automatically advertise on social media about new products, promotions and milestones.'
   s.description = 'Use this gem to add social media account to the store and automatically post about any new products, promotions, and milestones.'
@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'oa-core'
   s.add_runtime_dependency 'twitter'
   s.add_runtime_dependency 'omniauth-twitter'
+  s.add_runtime_dependency 'koala'
   s.add_runtime_dependency 'omniauth-facebook'
 
   s.add_development_dependency 'capybara', '~> 2.6'

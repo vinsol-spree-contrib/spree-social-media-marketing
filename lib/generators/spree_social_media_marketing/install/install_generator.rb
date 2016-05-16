@@ -5,7 +5,7 @@ module SpreeSocialMediaMarketing
       class_option :auto_run_migrations, :type => :boolean, :default => false
 
       def add_migrations
-        run 'bundle exec rake railties:install:migrations FROM=spree-social-media-marketing'
+        run 'bundle exec rake railties:install:migrations FROM=spree_social_media_marketing'
       end
 
       def run_migrations

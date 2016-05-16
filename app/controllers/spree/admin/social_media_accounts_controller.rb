@@ -3,7 +3,6 @@ module Spree
     class SocialMediaAccountsController < Spree::Admin::ResourceController
 
       def create
-        debugger
         account_uid = request.env['omniauth.auth']['uid']
         account_type = "Spree::#{request.env['omniauth.auth']['provider'].capitalize}Account"
         social_media_account = current_store.social_media_accounts.find_or_initialize_by(uid: account_uid, type: account_type).tap do |account|

@@ -2,7 +2,7 @@ module SpreeSocialMediaMarketing
   class Engine < Rails::Engine
     require 'spree/core'
     isolate_namespace Spree
-    engine_name 'spree-social-media-marketing'
+    engine_name 'spree_social_media_marketing'
 
     # use rspec for tests
     config.generators do |g|
