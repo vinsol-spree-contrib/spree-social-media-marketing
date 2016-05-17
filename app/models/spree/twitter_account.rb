@@ -5,14 +5,19 @@ module Spree
 
     after_initialize :set_twitter_account
 
-    def tweet_with_images(tweet, images)
-      image_ids = []
-      image_binaries = images.map(&:get_image_binary)
-      image_binaries.each do |image_binary|
-        image_id = upload_media(image_binary)
-        image_ids << image_id
+    def post(tweet, images)
+      if images.present?
+        first_four_images = images[0, 4]
+        image_ids = []
+        image_binaries = first_four_images.map(&:get_image_binary)
+        image_binaries.each do |image_binary|
+          image_id = upload_media(image_binary)
+          image_ids << image_id
+        end
+        post_tweet(tweet, media_ids: image_ids.join(','))
+      else
+        post_tweet(tweet)
       end
-      self.post_tweet(tweet, media_ids: image_ids.join(','))
     end
 
     private

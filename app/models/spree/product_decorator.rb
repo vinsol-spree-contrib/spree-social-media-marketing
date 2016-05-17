@@ -3,25 +3,8 @@ Spree::Product.class_eval do
 
   after_save :create_marketing_job, if: :available_on_changed_and_is_present?
 
-  def post_on_facebook
-    caption = "Hey there, we have launched a new product on our store. Check it out here #{ self.product_url(self.id, host: (Rails.application.config.action_mailer.default_url_options[:host] || 'localhost:3000')) }"
-    if self.images.exists?
-      first_image_binary = self.images.first.get_image_binary
-      Spree::Store.default.facebook_pages.each do |facebook_page|
-        facebook_page.post_image(first_image_binary, caption)
-      end
-    else
-      Spree::Store.default.facebook_pages.each do |facebook_page|
-        facebook_page.post_message(caption)
-      end
-    end
-  end
-
-  def post_on_twitter
-    tweet = "Hey there, we have launched a new product on our store. Check it out here #{ self.product_url(self.id, host: (Rails.application.config.action_mailer.default_url_options[:host] || 'localhost:3000')) }"
-    Spree::Store.default.twitter_accounts.each do |twitter_account|
-      twitter_account.tweet_with_images(tweet, self.images.limit(4))
-    end
+  def get_social_marketing_message
+    "Hey there, we have launched a new product on our store. Check it out here #{ self.product_url(self.id, host: (Rails.application.config.action_mailer.default_url_options[:host] || 'localhost:3000')) }"
   end
 
   private

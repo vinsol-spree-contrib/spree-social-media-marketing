@@ -13,17 +13,26 @@ module Spree
 
     attr_accessor :client
 
-    def post_message(message)
-      client.put_connections(self.page_id, 'feed', message: message)
-    end
-
-    def post_image(source_binary, caption = '')
-      client.put_picture(source_binary, 'multipart/form-data', {message: caption}, self.page_id)
+    def post(message, image = nil)
+      if image
+        image_binary = image.get_image_binary
+        post_image(image_binary, message)
+      else
+        post_message(message)
+      end
     end
 
     private
       def set_koala_client
         self.client = Koala::Facebook::API.new(self.page_token)
+      end
+
+      def post_message(message)
+        client.put_connections(self.page_id, 'feed', message: message)
+      end
+
+      def post_image(source_binary, caption = '')
+        client.put_picture(source_binary, 'multipart/form-data', {message: caption}, self.page_id)
       end
 
       def get_and_assing_page_access_token

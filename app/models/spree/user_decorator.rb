@@ -8,18 +8,8 @@ Spree.user_class.class_eval do
 
   after_create :check_if_any_milestone_reached
 
-  def self.advertise_milestone_on_facebook(milestone)
-    caption = "Hurray. We have reached #{ milestone } users. Check out the store at #{ self.root_url(host: (Rails.application.config.action_mailer.default_url_options[:host] || 'localhost:3000')) }"
-    Spree::Store.default.facebook_pages.each do |facebook_page|
-      facebook_page.post_message(caption)
-    end
-  end
-
-  def self.advertise_milestone_on_twitter(milestone)
-    tweet = "Hurray. We have reached #{ milestone } users. Check out the store at #{ self.root_url(host: (Rails.application.config.action_mailer.default_url_options[:host] || 'localhost:3000')) }"
-    Spree::Store.default.twitter_accounts.each do |twitter_account|
-      twitter_account.post_tweet(tweet)
-    end
+  def self.get_social_marketing_message(milestone)
+    "Hurray. We have reached #{ milestone } users. Check out the store at #{ self.root_url(host: (Rails.application.config.action_mailer.default_url_options[:host] || 'localhost:3000')) }"
   end
 
   private
