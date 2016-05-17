@@ -1,6 +1,10 @@
 module Spree
   class FacebookPage < ActiveRecord::Base
 
+    class << self
+      include Spree::Core::Engine.routes.url_helpers
+    end
+
     belongs_to :account, class_name: 'Spree::FacebookAccount', foreign_key: :account_id
 
     validates :page_id, uniqueness: {message: 'has already been added'}
