@@ -5,14 +5,6 @@ module Spree
 
     after_initialize :set_twitter_account
 
-    def post_tweet(tweet, options = {})
-      client.update(tweet, options)
-    end
-
-    def upload_media(media)
-      client.upload(media)
-    end
-
     def tweet_with_images(tweet, images)
       image_ids = []
       image_binaries = images.map(&:get_image_binary)
@@ -24,6 +16,14 @@ module Spree
     end
 
     private
+      def post_tweet(tweet, options = {})
+        client.update(tweet, options)
+      end
+
+      def upload_media(media)
+        client.upload(media)
+      end
+
       def set_twitter_account
         self.client = Twitter::REST::Client.new do |config|
           config.consumer_key        = Rails.application.secrets.twitter_consumer_key
