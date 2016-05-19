@@ -20,7 +20,7 @@ module Spree
         if @post.destroy
           flash[:success] = 'Post Removed'
         else
-          flash[:alert] = 'Could Not Remove Post'
+          flash[:error] = 'Could Not Remove Post'
         end
         redirect_to :back
       end

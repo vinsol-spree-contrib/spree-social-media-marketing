@@ -27,7 +27,9 @@
             <%= account.name %>
           </td>
           <td>
-            <%= link_to 'View', admin_social_media_account_path(account) %>
+            <%= link_to admin_social_media_account_path(account), class: 'btn btn-primary btn-sm icon-link with-tip action-edit no-text' do %>
+              <span class='icon icon-edit'></span>
+            <% end %>
           </td>
         </tr>
       <% end %>

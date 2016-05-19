@@ -6,20 +6,57 @@
   <% link_to 'Back To Account', admin_social_media_account_path(@page.account) %>
 <% end %>
 
+<div id='social-media-post-form'>
+  <h4 class='text-success'>
+    Post a message on this Facebook page
+  </h4>
+  <hr/>
+  <%= form_for [:admin, @page.posts.build] do |post_form| %>
+    <div class="row">
+      <div class="col-md-12">
+        <%= post_form.label :post_message, 'New Post' %>
+        <%= post_form.text_area :post_message %>
+      </div>
+    </div>
+    <%= post_form.hidden_field :social_media_postable_id, value: @page.id %>
+    <%= post_form.hidden_field :social_media_postable_type, value: 'Spree::FacebookPage' %>
+    <div>
+      <%= post_form.fields_for post_form.object.images.build do |image_form| %>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="col-md-1">
+              <%= image_form.label :attachment, Spree.t(:image) %>
+            </div>
+            <div class="col-md-11">
+              <%= image_form.file_field :attachment %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <%= post_form.submit 'Submit New Post', class: "btn-success", icon: 'add' %>
+  <% end %>
+</div>
+
+<hr/>
+
 <div id="facebook-page-posts-list" data-hook>
-  <table class="table" id='listing_facebook_page_posts' data-hook>
-    <thead>
-      <tr data-hook="social_media_posts_header">
-        <th><%= Spree.t(:post) %></th>
-        <th><%= Spree.t(:image) %></th>
-        <th><%= Spree.t(:posted_at) %></th>
-        <th class="actions">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% if @page.posts.select { |post| post.persisted? }.empty? %>
-        <tr><td colspan="3"><%= Spree.t(:none) %></td></tr>
-      <% else %>
+  <h4>
+    Recent Posts
+  </h4>
+  <% if @page.posts.select { |post| post.persisted? }.empty? %>
+    <h5>You have no posts for this page.</h5>
+  <% else %>
+    <table class="table table-bordered" id='listing_facebook_page_posts' data-hook>
+      <thead>
+        <tr data-hook="social_media_posts_header">
+          <th><%= Spree.t(:post) %></th>
+          <th><%= Spree.t(:image) %></th>
+          <th><%= Spree.t(:posted_at) %></th>
+          <th class="actions">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
         <% @page.posts.select { |post| post.persisted? }.each do |post| %>
           <tr>
             <td>
@@ -32,27 +69,14 @@
               <%= post.created_at %>
             </td>
             <td>
-              <%= button_link_to 'Remove This Post', admin_social_media_post_path(post), method: :delete %>
+              <%= link_to admin_social_media_post_path(post), method: :delete, class: 'btn btn-danger btn-sm icon-link with-tip action-delete no-text', data: { confirm: 'Are you sure you want to remove this post?' } do %>
+                <span class='icon icon-delete'></span>
+              <% end %>
             </td>
           </tr>
         <% end %>
-      <% end %>
-    </tbody>
-  </table>
-</div>
-<hr>
-<div id='social-media-post-form'>
-  <%= form_for [:admin, @page.posts.build] do |post_form| %>
-    <%= post_form.label :post_message, 'New Post' %>
-    <%= post_form.text_area :post_message %>
-    <%= post_form.hidden_field :social_media_postable_id, value: @page.id %>
-    <%= post_form.hidden_field :social_media_postable_type, value: 'Spree::FacebookPage' %>
-    <div>
-      <%= post_form.fields_for post_form.object.images.build do |image_form| %>
-        <%= image_form.label :attachment, Spree.t(:image) %>
-        <%= image_form.file_field :attachment %>
-      <% end %>
-    </div>
-    <%= post_form.submit 'Submit New Post', class: "btn-success", icon: 'add' %>
+      </tbody>
+    </table>
   <% end %>
 </div>
+<hr>

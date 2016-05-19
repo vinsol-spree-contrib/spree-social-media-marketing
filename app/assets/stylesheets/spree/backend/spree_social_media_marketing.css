@@ -6,11 +6,6 @@ the installer will append this file to the app vendored assets here: 'vendor/ass
 
 #social_media_post_post_message {
   width: 400px;
-  height: 60px;
-}
-
-#social-media-post-form {
-  border: 1px solid black;
-  border-radius: 2px;
-  padding: 10px;
+  height: 200px;
+  vertical-align: middle;
 }
