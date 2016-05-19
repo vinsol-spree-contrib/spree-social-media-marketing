@@ -66,7 +66,7 @@
               <%= image_tag post.images.first.attachment.url(:mini) if post.images.exists? %>
             </td>
             <td>
-              <%= post.created_at %>
+              <%= post.created_at.strftime('%m/%d/%Y %I:%M %p') %>
             </td>
             <td>
               <%= link_to admin_social_media_post_path(post), method: :delete, class: 'btn btn-danger btn-sm icon-link with-tip action-delete no-text', data: { confirm: 'Are you sure you want to remove this post?' } do %>
