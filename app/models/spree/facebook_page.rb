@@ -1,3 +1,4 @@
+require 'koala'
 module Spree
   class FacebookPage < ActiveRecord::Base
 
