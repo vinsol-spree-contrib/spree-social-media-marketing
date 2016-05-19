@@ -7,7 +7,7 @@ module Spree
 
     def post(message, images)
       self.pages.each do |facebook_page|
-        facebook_page.post(message, images.first)
+        facebook_page.post(message, images)
       end
     end
 

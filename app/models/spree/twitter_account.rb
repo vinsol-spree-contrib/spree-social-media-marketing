@@ -1,11 +1,14 @@
 module Spree
   class TwitterAccount < SocialMediaAccount
     require 'twitter'
-    attr_accessor :client
+
+    has_many :posts, as: :social_media_postable, class_name: 'Spree::SocialMediaPost'
 
     after_initialize :set_twitter_account
 
-    def post(tweet, images)
+    attr_accessor :client
+
+    def post(tweet, images = [])
       if images.present?
         first_four_images = images[0, 4]
         image_ids = []
@@ -14,10 +17,15 @@ module Spree
           image_id = upload_media(image_binary)
           image_ids << image_id
         end
-        post_tweet(tweet, media_ids: image_ids.join(','))
+        response = post_tweet(tweet, media_ids: image_ids.join(','))
       else
-        post_tweet(tweet)
+        response = post_tweet(tweet)
       end
+      response.id
+    end
+
+    def remove_post(post_id)
+      client.destroy_status(post_id)
     end
 
     private

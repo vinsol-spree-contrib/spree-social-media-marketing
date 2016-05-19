@@ -4,7 +4,7 @@ end
 
 Spree.user_class.class_eval do
 
-  Spree.user_class::MILESTONES = [1000, 2000, 5000]
+  Spree.user_class::MILESTONES = [5, 1000, 2000, 5000]
 
   after_create :check_if_any_milestone_reached
 

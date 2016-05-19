@@ -2,7 +2,7 @@ module Spree
   module Admin
     class FacebookPagesController < Spree::Admin::ResourceController
       before_filter :fetch_account, only: [:create]
-      before_filter :fetch_page, only: [:destroy]
+      before_filter :fetch_page, only: [:destroy, :show]
 
       def create
         facebook_page = @account.pages.build(facebook_page_params)
@@ -21,6 +21,9 @@ module Spree
           flash[:alert] = 'Could Not Remove Page'
         end
         redirect_to :back
+      end
+
+      def show
       end
 
       private

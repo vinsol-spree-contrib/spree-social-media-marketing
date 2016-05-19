@@ -6,6 +6,7 @@ module Spree
     end
 
     belongs_to :account, class_name: 'Spree::FacebookAccount', foreign_key: :account_id
+    has_many :posts, as: :social_media_postable, class_name: 'Spree::SocialMediaPost'
 
     validates :page_id, uniqueness: {message: 'has already been added'}
     before_validation :get_and_assing_page_access_token
@@ -13,13 +14,18 @@ module Spree
 
     attr_accessor :client
 
-    def post(message, image = nil)
-      if image
-        image_binary = image.get_image_binary
-        post_image(image_binary, message)
+    def post(message, images = [])
+      if images.present?
+        image_binary = images[0].get_image_binary
+        response = post_image(image_binary, message)
       else
-        post_message(message)
+        response = post_message(message)
       end
+      response['id']
+    end
+
+    def remove_post(post_id)
+      client.delete_object(post_id)
     end
 
     private

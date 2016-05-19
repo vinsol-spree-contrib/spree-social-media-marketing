@@ -3,7 +3,7 @@ module Spree
     belongs_to :store, class_name: 'Spree::Product'
 
     def self.types
-      %w(Facebook Twitter Instagram)
+      %w(Facebook Twitter)
     end
 
     def display_type

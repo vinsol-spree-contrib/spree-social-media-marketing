@@ -1,16 +1,13 @@
 <% content_for :page_title do %>
-  <%= @social_media_account.display_type %>
+  <%= "#{ @social_media_account.display_type } Account" %>
+  <%= "for #{ @social_media_account.name }" if @social_media_account.name.present? %>
 <% end %>
-<% if @social_media_account.display_type == 'Facebook' %>
-  <% content_for :page_actions do %>
-    <% form_for [:admin, @social_media_account.pages.build] do |page_form| %>
-      <%= page_form.label :page_id, 'Page Id' %>
-      <%= page_form.text_field :page_id %>
-      <%= page_form.hidden_field :account_id, value: @social_media_account.id %>
-      <%= page_form.submit 'Add New Page', class: "btn-success", icon: 'add' %>
-    <% end %>
-  <% end %>
 
+<% content_for :page_actions do %>
+  <% link_to 'Back To Accounts', admin_social_media_accounts_path %>
+<% end %>
+
+<% if @social_media_account.display_type == 'Facebook' %>
   <div id="facebook-pages-list" data-hook>
     <table class="table" id='listing_facebook_pages' data-hook>
       <thead>
@@ -21,23 +18,80 @@
         </tr>
       </thead>
       <tbody>
-        <% @social_media_account.pages.select { |page| page.persisted? }.each do |page| %>
-          <tr>
-            <td>
-              <%= page.page_id %>
-            </td>
-            <td>
-              <%= page.name %>
-            </td>
-            <td>
-              <%= button_link_to 'Remove This Page', admin_facebook_page_path(page), method: :delete %>
-            </td>
-          </tr>
-        <% end %>
         <% if @social_media_account.pages.select { |page| page.persisted? }.empty? %>
           <tr><td colspan="3"><%= Spree.t(:none) %></td></tr>
+        <% else %>
+          <% @social_media_account.pages.select { |page| page.persisted? }.each do |page| %>
+            <tr>
+              <td>
+                <%= page.page_id %>
+              </td>
+              <td>
+                <%= page.name %>
+              </td>
+              <td>
+                <%= button_link_to 'Remove This Page', admin_facebook_page_path(page), method: :delete %>
+                <%= button_link_to 'View', admin_facebook_page_path(page) %>
+              </td>
+            </tr>
+          <% end %>
         <% end %>
       </tbody>
     </table>
   </div>
+  <%= form_for [:admin, @social_media_account.pages.build] do |page_form| %>
+    <%= page_form.label :page_id, 'Page Id' %>
+    <%= page_form.text_field :page_id %>
+    <%= page_form.hidden_field :account_id, value: @social_media_account.id %>
+    <%= page_form.submit 'Add New Page', class: "btn-success", icon: 'add' %>
+  <% end %>
+<% elsif @social_media_account.display_type == 'Twitter' %>
+  <div id="facebook-pages-list" data-hook>
+    <table class="table" id='listing_facebook_pages' data-hook>
+      <thead>
+        <tr data-hook="social_media_account_header">
+          <th><%= Spree.t(:post) %></th>
+          <th><%= Spree.t(:posted_at) %></th>
+          <th class="actions">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @social_media_account.posts.select { |post| post.persisted? }.empty? %>
+          <tr><td colspan="3"><%= Spree.t(:none) %></td></tr>
+        <% else %>
+          <% @social_media_account.posts.select { |post| post.persisted? }.each do |post| %>
+            <tr>
+              <td>
+                <%= post.post_message %>
+              </td>
+              <td>
+                <%= post.created_at %>
+              </td>
+              <td>
+                <%= button_link_to 'Remove This Post', admin_social_media_post_path(post), method: :delete %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <hr>
+  <div id='social-media-post-form'>
+    <%= form_for [:admin, @social_media_account.posts.build] do |post_form| %>
+      <%= post_form.label :post_message, 'New Post' %>
+      <%= post_form.text_area :post_message %>
+      <%= post_form.hidden_field :social_media_postable_id, value: @social_media_account.id %>
+      <%= post_form.hidden_field :social_media_postable_type, value: 'Spree::SocialMediaAccount' %>
+      <div>
+        <%= post_form.fields_for post_form.object.images.build do |image_form| %>
+          <%= image_form.label :attachment, Spree.t(:image) %>
+          <%= image_form.file_field :attachment %>
+        <% end %>
+      </div>
+      <%= post_form.submit 'Submit New Post', class: "btn-success", icon: 'add' %>
+    <% end %>
+  </div>
+
+
 <% end %>

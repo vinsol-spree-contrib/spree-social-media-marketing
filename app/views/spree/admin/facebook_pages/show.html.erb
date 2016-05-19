@@ -1,0 +1,58 @@
+<% content_for :page_title do %>
+  <%= "Facebook Page #{ @page.page_id }" %>
+<% end %>
+
+<% content_for :page_actions do %>
+  <% link_to 'Back To Account', admin_social_media_account_path(@page.account) %>
+<% end %>
+
+<div id="facebook-page-posts-list" data-hook>
+  <table class="table" id='listing_facebook_page_posts' data-hook>
+    <thead>
+      <tr data-hook="social_media_posts_header">
+        <th><%= Spree.t(:post) %></th>
+        <th><%= Spree.t(:image) %></th>
+        <th><%= Spree.t(:posted_at) %></th>
+        <th class="actions">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @page.posts.select { |post| post.persisted? }.empty? %>
+        <tr><td colspan="3"><%= Spree.t(:none) %></td></tr>
+      <% else %>
+        <% @page.posts.select { |post| post.persisted? }.each do |post| %>
+          <tr>
+            <td>
+              <%= post.post_message %>
+            </td>
+            <td>
+              <%= image_tag post.images.first.attachment.url(:mini) if post.images.exists? %>
+            </td>
+            <td>
+              <%= post.created_at %>
+            </td>
+            <td>
+              <%= button_link_to 'Remove This Post', admin_social_media_post_path(post), method: :delete %>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<hr>
+<div id='social-media-post-form'>
+  <%= form_for [:admin, @page.posts.build] do |post_form| %>
+    <%= post_form.label :post_message, 'New Post' %>
+    <%= post_form.text_area :post_message %>
+    <%= post_form.hidden_field :social_media_postable_id, value: @page.id %>
+    <%= post_form.hidden_field :social_media_postable_type, value: 'Spree::FacebookPage' %>
+    <div>
+      <%= post_form.fields_for post_form.object.images.build do |image_form| %>
+        <%= image_form.label :attachment, Spree.t(:image) %>
+        <%= image_form.file_field :attachment %>
+      <% end %>
+    </div>
+    <%= post_form.submit 'Submit New Post', class: "btn-success", icon: 'add' %>
+  <% end %>
+</div>
