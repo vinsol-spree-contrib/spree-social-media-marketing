@@ -25,7 +25,11 @@ module Spree
     end
 
     def remove_post(post_id)
-      client.destroy_status(post_id)
+      begin
+        client.destroy_status(post_id)
+      rescue Twitter::Error::ClientError => e
+        Rails.logger.error("Twitter Remove Post Error For PostId: #{ post_id }\n#{ e.message }\n")
+      end
     end
 
     private

@@ -26,7 +26,11 @@ module Spree
     end
 
     def remove_post(post_id)
-      client.delete_object(post_id)
+      begin
+        client.delete_object(post_id)
+      rescue Koala::Facebook::ClientError => e
+        Rails.logger.error("Facebook Remove Post Error For PostId: #{ post_id }\n#{ e.message }\n")
+      end
     end
 
     private
