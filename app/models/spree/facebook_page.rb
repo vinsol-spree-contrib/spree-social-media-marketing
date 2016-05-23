@@ -46,6 +46,7 @@ module Spree
         client.put_picture(source_binary, 'multipart/form-data', {message: caption}, self.page_id)
       end
 
+      ## TODO: What is assing?
       def get_and_assing_page_access_token
         page_access_token_uri = URI("https://graph.facebook.com/#{ page_id }")
         page_access_token_uri.query = URI.encode_www_form(access_token: account.auth_token, fields: 'access_token')

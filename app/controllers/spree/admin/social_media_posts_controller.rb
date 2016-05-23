@@ -5,9 +5,12 @@ module Spree
 
       def create
         @social_media_post = Spree::SocialMediaPost.new(post_params)
+
+        ## TODO: We don't need .present
         if params[:social_media_post][:image].present?
           @social_media_post.images.build(post_image_params)
         end
+
         if @social_media_post.save
           flash[:success] = 'Post Added'
         else

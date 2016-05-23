@@ -1,9 +1,13 @@
 module Spree
   class SocialMediaPost < ActiveRecord::Base
+
+    ## TODO: Can we rename this to social_media_publishable? postable is no word.
     belongs_to :social_media_postable, polymorphic: true
     has_many :social_media_post_images, dependent: :destroy
     has_many :images, through: :social_media_post_images
 
+    ## TODO: Why is this limit present? Should be only for Twitter. Also, extract to a constant.
+    ## TODO: Add validations for presence of social_media_publishable
     validates :post_message, presence: true, length: { maximum: 140 }
 
     accepts_nested_attributes_for :images
