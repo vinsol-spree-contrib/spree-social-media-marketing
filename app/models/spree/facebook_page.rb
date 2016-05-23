@@ -53,8 +53,10 @@ module Spree
         response_json = JSON.parse(response.body)
         if response.code == '200'
           self.page_token = response_json['access_token']
+          set_koala_client
+          self.page_name = client.get_page(self.page_id)['name']
         else
-          errors.add(:base, response_json['error']['message'])
+          errors.add(:base, "Could not add this page. Please check the page id again and make sure you have appropriate permisions for this page")
         end
       end
   end

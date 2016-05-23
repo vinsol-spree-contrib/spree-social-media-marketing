@@ -2,6 +2,7 @@ Spree::Core::Engine.routes.draw do
   # Add your extension routes here
   namespace :admin do
     resources :social_media_accounts
+    # resources :social_media_marketing_events
     resources :facebook_pages, only: [:create, :destroy, :show]
     resources :social_media_posts, only: [:create, :destroy]
   end

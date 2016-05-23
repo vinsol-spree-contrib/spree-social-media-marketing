@@ -9,3 +9,7 @@ the installer will append this file to the app vendored assets here: 'vendor/ass
   height: 200px;
   vertical-align: middle;
 }
+
+#remaining_charachter_block {
+  line-height: 200px;
+}

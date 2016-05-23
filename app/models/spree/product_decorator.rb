@@ -8,7 +8,6 @@ Spree::Product.class_eval do
   end
 
   private
-
     def available_on_changed_and_is_present?
       available_on? && available_on_changed?
     end

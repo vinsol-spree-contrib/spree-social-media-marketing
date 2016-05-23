@@ -9,7 +9,7 @@
 
 <% if @social_media_account.display_type == 'Facebook' %>
   <%= form_for [:admin, @social_media_account.pages.build] do |page_form| %>
-    <%= page_form.label :page_id, 'Page Id' %>
+    <%= page_form.label :page_id, 'Facebook Page Id' %>
     <%= page_form.text_field :page_id %>
     <%= page_form.hidden_field :account_id, value: @social_media_account.id %>
     <%= page_form.submit 'Add New Page', class: "btn-success", icon: 'add' %>
@@ -18,7 +18,7 @@
     <table class="table" id='listing_facebook_pages' data-hook>
       <thead>
         <tr data-hook="social_media_account_header">
-          <th><%= Spree.t(:page_id) %></th>
+          <th><%= Spree.t(:page_name) %></th>
           <th class="actions">Actions</th>
         </tr>
       </thead>
@@ -29,7 +29,7 @@
           <% @social_media_account.pages.select { |page| page.persisted? }.each do |page| %>
             <tr>
               <td>
-                <%= page.page_id %>
+                <%= page.page_name %>
               </td>
               <td>
                 <div class="row">
@@ -56,29 +56,7 @@
     </h4>
     <hr/>
     <%= form_for [:admin, @social_media_account.posts.build] do |post_form| %>
-      <div class="row">
-        <div class="col-md-12">
-          <%= post_form.label :post_message, 'New Post' %>
-          <%= post_form.text_area :post_message %>
-        </div>
-      </div>
-      <%= post_form.hidden_field :social_media_postable_id, value: @social_media_account.id %>
-      <%= post_form.hidden_field :social_media_postable_type, value: 'Spree::SocialMediaAccount' %>
-      <div>
-        <%= post_form.fields_for post_form.object.images.build do |image_form| %>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="col-md-1">
-                <%= image_form.label :attachment, Spree.t(:image) %>
-              </div>
-              <div class="col-md-11">
-                <%= image_form.file_field :attachment %>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-      <%= post_form.submit 'Submit New Post', class: "btn-success", icon: 'add' %>
+      <%= render 'spree/admin/social_media_posts/form', { post_form: post_form, social_media_postable_id: @social_media_account.id, social_media_postable_type: 'Spree::SocialMediaAccount' } %>
     <% end %>
   </div>
   <div id="twitter-account-posts-list" data-hook>

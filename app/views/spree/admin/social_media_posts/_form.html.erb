@@ -1,0 +1,26 @@
+<%= post_form.hidden_field :social_media_postable_id, value: social_media_postable_id %>
+<%= post_form.hidden_field :social_media_postable_type, value: social_media_postable_type %>
+<div>
+  <%= post_form.fields_for post_form.object.images.build do |image_form| %>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="col-md-1">
+          <%= image_form.label :attachment, Spree.t(:image) %>
+        </div>
+        <div class="col-md-11">
+          <%= image_form.file_field :attachment %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <%= post_form.label :post_message, 'Message' %>
+    <%= post_form.text_area :post_message, class: 'social_media_post_message' %>
+  </div>
+  <div class="col-md-6" id='remaining_charachter_block'>
+    <span id='remaining_charachter_span'></span> Charachters Remaining
+  </div>
+</div>
+<%= post_form.submit 'Submit New Post', class: "btn-success", icon: 'add' %>

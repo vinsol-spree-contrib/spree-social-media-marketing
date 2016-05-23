@@ -14,11 +14,10 @@ Spree::Order.class_eval do
 
   private
     def check_if_any_milestone_reached
-      completed_order_count = get_completed_order_count
-      if completed_order_count.in?(Spree::Order::MILESTONES)
-        milestone_reached(completed_order_count)
+      completed_order_size = completed_order_count
+      if completed_order_size.in?(Spree::Order::MILESTONES)
+        milestone_reached(completed_order_size)
       end
-      completed_order_count.in?(Spree::Order::MILESTONES)
     end
 
     def milestone_reached(milestone)
@@ -26,7 +25,7 @@ Spree::Order.class_eval do
     end
 
     # This is placeholder method. Developers can override this to get the number of orders as per their app.
-    def get_completed_order_count
+    def completed_order_count
       Spree::Order.complete.count
     end
 end
