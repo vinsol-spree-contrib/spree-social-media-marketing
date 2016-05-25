@@ -2,7 +2,7 @@ Spree::Order.class_eval do
   extend Spree::SocialMediaUrlHelpers
 
   Spree::Order::MARKUP_ALLOWED_METHODS = [:completed_order_count, :home_page]
-  Spree::Order::MILESTONES = [1000, 2000, 5000]
+  Spree::Order::PROMOTIONAL_MILESTONES = [1000, 2000, 5000]
 
   after_save :check_if_any_milestone_reached
 
@@ -19,12 +19,12 @@ Spree::Order.class_eval do
   private
     def check_if_any_milestone_reached
       completed_order_size = Spree::Order.completed_order_count
-      if completed_order_size.in?(Spree::Order::MILESTONES)
-        milestone_reached(completed_order_size)
+      if completed_order_size.in?(Spree::Order::PROMOTIONAL_MILESTONES)
+        schedule_marketing_notifications(completed_order_size)
       end
     end
 
-    def milestone_reached(milestone)
+    def schedule_marketing_notifications(milestone)
       if Spree::SocialMediaMarketingEvent.find_by(name: 'order_milestone').active?
         OrderMilestoneMarketingJob.perform_later(milestone)
       end

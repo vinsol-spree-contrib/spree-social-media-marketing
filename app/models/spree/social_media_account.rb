@@ -5,9 +5,5 @@ module Spree
     def self.types
       %w(Facebook Twitter)
     end
-
-    def display_type
-      type.match(/spree\:\:(.*)account/i)[1]
-    end
   end
 end

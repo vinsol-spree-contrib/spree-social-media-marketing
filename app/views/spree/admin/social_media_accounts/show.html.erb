@@ -1,5 +1,5 @@
 <% content_for :page_title do %>
-  <%= "#{ @social_media_account.display_type } Account" %>
+  <%= "#{ @social_media_account.display_account_name } Account" %>
   <%= "for #{ @social_media_account.name }" if @social_media_account.name.present? %>
 <% end %>
 
@@ -7,7 +7,7 @@
   <%= link_to_with_icon 'arrow-left', Spree.t(:back_to_accounts), admin_social_media_accounts_path, class: 'btn btn-primary' %>
 <% end %>
 
-<% if @social_media_account.display_type == 'Facebook' %>
+<% if @social_media_account.display_account_name == 'Facebook' %>
   <div class='col-sm-10'>
     <%= form_for [:admin, @social_media_account.pages.build] do |page_form| %>
       <div class="panel panel-default" id="add-facebook-page" data-hook>
@@ -64,7 +64,7 @@
       </table>
     </div>
   </div>
-<% elsif @social_media_account.display_type == 'Twitter' %>
+<% elsif @social_media_account.display_account_name == 'Twitter' %>
   <div class='panel panel-default'>
     <div class='panel-heading'>
       <h1 class='panel-title'>

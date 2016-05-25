@@ -2,16 +2,11 @@ require 'koala'
 module Spree
   class FacebookPage < ActiveRecord::Base
 
-    class << self
-      include Spree::Core::Engine.routes.url_helpers
-    end
-
     belongs_to :account, class_name: 'Spree::FacebookAccount', foreign_key: :account_id
     has_many :posts, as: :social_media_postable, class_name: 'Spree::SocialMediaPost'
 
     validates :page_id, presence: true, uniqueness: {message: 'has already been added'}
     before_validation :get_and_assign_page_access_token
-    after_initialize :set_koala_client, if: :page_token?
 
     attr_accessor :client
 
@@ -26,6 +21,7 @@ module Spree
     end
 
     def remove_post(post_id)
+      set_koala_client
       begin
         client.delete_object(post_id)
       rescue Koala::Facebook::ClientError => e
@@ -39,10 +35,12 @@ module Spree
       end
 
       def post_message(message)
+        set_koala_client
         client.put_connections(self.page_id, 'feed', message: message)
       end
 
       def post_image(source_binary, caption = '')
+        set_koala_client
         client.put_picture(source_binary, 'multipart/form-data', {message: caption}, self.page_id)
       end
 

@@ -11,6 +11,10 @@ module Spree
       end
     end
 
+    def display_account_name
+      'Facebook'
+    end
+
     private
       def get_and_assign_long_lived_access_token
         long_lived_user_access_token_uri = URI('https://graph.facebook.com/oauth/access_token')
