@@ -17,6 +17,9 @@ module Spree
       end
 
       def show
+        if @social_media_account.display_type == 'Twitter'
+          @posts = @social_media_account.posts.order("created_at desc").page(params[:page]).per(params[:per_page])
+        end
       end
 
       private

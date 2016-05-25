@@ -1,0 +1,46 @@
+<div data-hook="admin_social_media_marketing_event_form_fields">
+
+  <div data-hook="social_media_marketing_event" class="row">
+    <div class="col-md-9">
+      <div class='row'>
+        <div data-hook="name" class="form-group">
+          <%= label_tag :social_media_marketing_event_name, Spree.t(:name) %>:
+          <b><%= @social_media_marketing_event.name.titleize %></b>
+        </div>
+      </div>
+      <div class='row'>
+        <div>
+          <% class_to_use = eval(@social_media_marketing_event.class_to_use) %>
+          <% if class_to_use::MARKUP_ALLOWED_METHODS.present? %>
+            <div>
+              Type the default post for <%= @social_media_marketing_event.name.titleize %> message. You can also add dynamic content to it by using simple markup. Example: &lt;method_name&gt;. <a data-toggle="collapse" data-target="#usable_methods_div" id='show-available-methods-link'>Show available methods.</a>
+              <div id="usable_methods_div" class="collapse">
+                <ul>
+                  <% class_to_use::MARKUP_ALLOWED_METHODS.each do |method| %>
+                    <li>
+                      <%= method %>
+                    </li>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <div data-hook="message" class="form-group remaining_character_block">
+          <%= label_tag :social_media_marketing_event_message, Spree.t(:message) %>
+          <%= text_area :social_media_marketing_event, :message, { :cols => 50, :rows => 4, :class => 'form-control social_media_post_message' } %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class='row'>
+    <div class="col-md-2">
+      <div data-hook="active" class="form-group">
+        <%= label_tag :social_media_marketing_event_active, Spree.t(:active) %>
+        <div class="check-box">
+          <%= check_box :social_media_marketing_event, :active %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

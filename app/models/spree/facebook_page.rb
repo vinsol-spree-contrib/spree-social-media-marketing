@@ -9,8 +9,8 @@ module Spree
     belongs_to :account, class_name: 'Spree::FacebookAccount', foreign_key: :account_id
     has_many :posts, as: :social_media_postable, class_name: 'Spree::SocialMediaPost'
 
-    validates :page_id, uniqueness: {message: 'has already been added'}
-    before_validation :get_and_assing_page_access_token
+    validates :page_id, presence: true, uniqueness: {message: 'has already been added'}
+    before_validation :get_and_assign_page_access_token
     after_initialize :set_koala_client, if: :page_token?
 
     attr_accessor :client
@@ -46,8 +46,8 @@ module Spree
         client.put_picture(source_binary, 'multipart/form-data', {message: caption}, self.page_id)
       end
 
-      ## TODO: What is assing?
-      def get_and_assing_page_access_token
+      ## TODO: What is assing?(done)
+      def get_and_assign_page_access_token
         page_access_token_uri = URI("https://graph.facebook.com/#{ page_id }")
         page_access_token_uri.query = URI.encode_www_form(access_token: account.auth_token, fields: 'access_token')
         response = Net::HTTP.get_response(page_access_token_uri)

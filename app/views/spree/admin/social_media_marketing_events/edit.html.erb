@@ -1,0 +1,11 @@
+<% content_for :page_title do %>
+  <%= link_to Spree.t(:Events), admin_social_media_marketing_events_path %> /
+  <%= @social_media_marketing_event.name %>
+<% end %>
+
+<%= form_for @social_media_marketing_event, url: admin_social_media_marketing_event_path(@social_media_marketing_event) do |f| %>
+  <fieldset>
+    <%= render partial: 'form', locals: { f: f } %>
+    <%= render partial: 'spree/admin/shared/edit_resource_links' %>
+  </fieldset>
+<% end %>

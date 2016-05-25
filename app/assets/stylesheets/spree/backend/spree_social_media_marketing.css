@@ -6,10 +6,23 @@ the installer will append this file to the app vendored assets here: 'vendor/ass
 
 #social_media_post_post_message {
   width: 400px;
-  height: 200px;
   vertical-align: middle;
 }
 
-#remaining_charachter_block {
-  line-height: 200px;
+#remaining_character_block {
+  line-height: 100px;
+  text-align: left;
+}
+
+#facebook_page_addition_button {
+  margin-top: 20px;
+}
+
+td.social-media-post-message-column {
+  word-break: break-all;
+  width: 40%;
+}
+
+a#show-available-methods-link {
+  cursor: pointer;
 }

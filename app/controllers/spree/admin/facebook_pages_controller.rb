@@ -27,7 +27,12 @@ module Spree
       end
 
       def show
+        @posts = @page.posts.order("created_at desc").page(params[:page]).per(params[:per_page])
       end
+
+      # def collection
+      #   Spree::GiftCard.order("created_at desc").page(params[:page]).per(Spree::Config[:orders_per_page])
+      # end
 
       private
 

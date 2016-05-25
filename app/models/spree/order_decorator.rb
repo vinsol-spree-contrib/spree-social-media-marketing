@@ -1,31 +1,32 @@
-class << Spree::Order
-  include Spree::Core::Engine.routes.url_helpers
-end
-
 Spree::Order.class_eval do
+  extend Spree::SocialMediaUrlHelpers
 
+  Spree::Order::MARKUP_ALLOWED_METHODS = [:completed_order_count, :home_page]
   Spree::Order::MILESTONES = [1000, 2000, 5000]
 
   after_save :check_if_any_milestone_reached
 
-  def self.get_social_marketing_message(milestone)
-    "Hurray. We have reached #{ milestone } orders. Check out the store at #{ self.root_url(host: (Rails.application.config.action_mailer.default_url_options[:host] || 'localhost:3000')) }"
+  def self.get_social_marketing_message(milestone = 0)
+    marketing_event = Spree::SocialMediaMarketingEvent.find_by(name: 'order_milestone')
+    marketing_event.get_parsed_message(self, { completed_order_count: milestone.to_s })
+  end
+
+  # This is placeholder method. Developers can override this to get the number of orders as per their app.
+  def self.completed_order_count
+    Spree::Order.complete.count.to_s
   end
 
   private
     def check_if_any_milestone_reached
-      completed_order_size = completed_order_count
+      completed_order_size = Spree::Order.completed_order_count
       if completed_order_size.in?(Spree::Order::MILESTONES)
         milestone_reached(completed_order_size)
       end
     end
 
     def milestone_reached(milestone)
-      OrderMilestoneMarketingJob.perform_later(milestone)
-    end
-
-    # This is placeholder method. Developers can override this to get the number of orders as per their app.
-    def completed_order_count
-      Spree::Order.complete.count
-    end
+      if Spree::SocialMediaMarketingEvent.find_by(name: 'order_milestone').active?
+        OrderMilestoneMarketingJob.perform_later(milestone)
+      end
+    end  
 end

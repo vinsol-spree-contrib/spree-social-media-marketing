@@ -3,58 +3,20 @@
 <% end %>
 
 <% content_for :page_actions do %>
-  <% link_to 'Back To Account', admin_social_media_account_path(@page.account) %>
+  <%= link_to_with_icon 'arrow-left', Spree.t(:back_to_account), admin_social_media_account_path(@page.account), class: 'btn btn-primary' %>
 <% end %>
 
-<div id='social-media-post-form'>
-  <h4 class='text-success'>
-    Post a message on this Facebook page
-  </h4>
-  <hr/>
-  <%= form_for [:admin, @page.posts.build] do |post_form| %>
-    <%= render 'spree/admin/social_media_posts/form', { post_form: post_form, social_media_postable_id: @page.id, social_media_postable_type: 'Spree::FacebookPage' } %>
-  <% end %>
+<div class='panel panel-default'>
+  <div class='panel-heading'>
+    <h1 class='panel-title'>
+      Post a message on this Facebook page
+    </h1>
+  </div>
+  <div class='panel-body'>
+    <%= form_for [:admin, Spree::SocialMediaPost.new] do |post_form| %>
+      <%= render 'spree/admin/social_media_posts/form', { post_form: post_form, social_media_postable_id: @page.id, social_media_postable_type: 'Spree::FacebookPage', limit_message_characters: false } %>
+    <% end %>
+  </div>
 </div>
 
-<hr/>
-
-<div id="facebook-page-posts-list" data-hook>
-  <h4>
-    Recent Posts
-  </h4>
-  <% if @page.posts.select { |post| post.persisted? }.empty? %>
-    <h5>You have no posts for this page.</h5>
-  <% else %>
-    <table class="table table-bordered" id='listing_facebook_page_posts' data-hook>
-      <thead>
-        <tr data-hook="social_media_posts_header">
-          <th><%= Spree.t(:post) %></th>
-          <th><%= Spree.t(:image) %></th>
-          <th><%= Spree.t(:posted_at) %></th>
-          <th class="actions">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @page.posts.select { |post| post.persisted? }.each do |post| %>
-          <tr>
-            <td>
-              <%= post.post_message %>
-            </td>
-            <td>
-              <%= image_tag post.images.first.attachment.url(:mini) if post.images.exists? %>
-            </td>
-            <td>
-              <%= post.created_at.strftime('%m/%d/%Y %I:%M %p') %>
-            </td>
-            <td>
-              <%= link_to admin_social_media_post_path(post), method: :delete, class: 'btn btn-danger btn-sm icon-link with-tip action-delete no-text', data: { confirm: 'Are you sure you want to remove this post?' } do %>
-                <span class='icon icon-delete'></span>
-              <% end %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  <% end %>
-</div>
-<hr>
+<%= render 'spree/admin/social_media_posts/show', { posts: @posts } %>
