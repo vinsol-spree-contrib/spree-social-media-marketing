@@ -38,7 +38,7 @@ module Spree
         end
 
         def post_params
-          params.require(:social_media_post).permit(:post_message, :social_media_postable_id, :social_media_postable_type)
+          params.require(:social_media_post).permit(:post_message, :social_media_publishable_id, :social_media_publishable_type)
         end
 
         def post_image_params

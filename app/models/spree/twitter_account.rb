@@ -2,7 +2,7 @@ module Spree
   class TwitterAccount < SocialMediaAccount
     require 'twitter'
 
-    has_many :posts, as: :social_media_postable, class_name: 'Spree::SocialMediaPost'
+    has_many :posts, as: :social_media_publishable, class_name: 'Spree::SocialMediaPost'
 
     Spree::TwitterAccount::IMAGE_LIMIT = 4
     attr_accessor :client

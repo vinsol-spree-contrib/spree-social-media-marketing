@@ -14,7 +14,7 @@
   </div>
   <div class='panel-body'>
     <%= form_for [:admin, Spree::SocialMediaPost.new] do |post_form| %>
-      <%= render 'spree/admin/social_media_posts/form', { post_form: post_form, social_media_postable_id: @page.id, social_media_postable_type: 'Spree::FacebookPage', limit_message_characters: false } %>
+      <%= render 'spree/admin/social_media_posts/form', { post_form: post_form, social_media_publishable_id: @page.id, social_media_publishable_type: 'Spree::FacebookPage', limit_message_characters: false } %>
     <% end %>
   </div>
 </div>
