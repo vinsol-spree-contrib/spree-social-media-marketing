@@ -11,7 +11,7 @@ module Spree
         if social_media_account.save
           flash[:success] = 'Account Saved'
         else
-          flash[:error] = social_media_account.errors.full_messages.join('\n')
+          flash[:error] = social_media_account.errors.full_messages.join(', ')
         end
         redirect_to admin_social_media_accounts_path
       end

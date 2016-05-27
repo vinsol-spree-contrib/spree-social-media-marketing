@@ -14,7 +14,7 @@ module Spree
         if @social_media_post.save
           flash[:success] = 'Post Added'
         else
-          flash[:error] = @social_media_post.errors.full_messages.join('\n')
+          flash[:error] = @social_media_post.errors.full_messages.join(', ')
         end
         redirect_to :back
       end

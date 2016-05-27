@@ -11,7 +11,7 @@ module Spree
           ## TODO: Please use I18n everywhere.
           flash[:success] = 'Page Added'
         else
-          flash[:error] = facebook_page.errors.full_messages.join('\n')
+          flash[:error] = facebook_page.errors.full_messages.join(', ')
         end
 
         redirect_to admin_social_media_account_path(@account)
