@@ -1,13 +1,13 @@
 module Spree
   module Admin
     class SocialMediaPostsController < Spree::Admin::ResourceController
-      before_filter :fetch_post, only: [:destroy]
+      before_filter :fetch_post, only: [:destroy, :repost]
 
       def create
         @social_media_post = Spree::SocialMediaPost.new(post_params)
 
-        ## TODO: We don't need .present
-        if params[:social_media_post][:image].present?
+        ## TODO: We don't need .present(done)
+        if params[:social_media_post][:image]
           @social_media_post.images.build(post_image_params)
         end
 
@@ -25,6 +25,11 @@ module Spree
         else
           flash[:error] = 'Could Not Remove Post'
         end
+        redirect_to :back
+      end
+
+      def repost
+        @post.send_post_and_assign_post_id
         redirect_to :back
       end
 

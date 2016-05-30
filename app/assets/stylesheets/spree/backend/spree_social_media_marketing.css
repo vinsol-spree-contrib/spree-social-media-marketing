@@ -13,9 +13,9 @@ the installer will append this file to the app vendored assets here: 'vendor/ass
   margin-top: 20px;
 }
 
-td.social-media-post-message-column {
+td.social-media-post-message-column, td.social-media-post-error-message-column {
   word-break: break-all;
-  width: 40%;
+  width: 30%;
 }
 
 a#show-available-methods-link {

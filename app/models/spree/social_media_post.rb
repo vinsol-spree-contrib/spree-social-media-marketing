@@ -16,15 +16,16 @@ module Spree
     after_create :send_post_and_assign_post_id
     after_destroy :destroy_post_on_social_media
 
-    private
-      def send_post_and_assign_post_id
-        begin
-          self.update(post_id: social_media_publishable.post(post_message, images))
-        rescue StandardError => e
-          self.update(error_message: e.message)
-        end
+    def send_post_and_assign_post_id
+      begin
+        post_id = social_media_publishable.post(post_message, images)
+        self.update(post_id: post_id, error_message: nil)
+      rescue StandardError => e
+        self.update(error_message: e.message)
       end
-
+    end
+    
+    private
       def destroy_post_on_social_media
         social_media_publishable.remove_post(post_id) if post_id?
       end
