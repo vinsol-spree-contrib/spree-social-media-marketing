@@ -4,10 +4,8 @@ Spree::StockMovement.class_eval do
   after_create :check_total_stock
 
   Spree::StockMovement::MARKUP_ALLOWED_METHODS = [:product_name, :product_quantity, :home_page, :product_page]
-  Spree::StockMovement::LOW_STOCK_LIMIT = 9
 
   def get_social_marketing_message
-    marketing_event = Spree::SocialMediaMarketingEvent.find_by(name: 'low_stock_products')
     marketing_event.get_parsed_message(self)
   end
 
@@ -23,11 +21,15 @@ Spree::StockMovement.class_eval do
     product_url(self.stock_item.variant.product.id) if self.persisted?
   end
 
+  def marketing_event
+    @marketing_event ||= Spree::SocialMediaMarketingEvent.find_by(name: 'Low Stock Products')
+  end
+
   private
 
   def check_total_stock
     product_total_on_hand = self.stock_item.variant.product.total_on_hand
-    if Spree::SocialMediaMarketingEvent.find_by(name: 'low_stock_products').active? && self.stock_item.variant.product.total_on_hand == Spree::StockMovement::LOW_STOCK_LIMIT
+    if marketing_event.active? && self.stock_item.variant.product.total_on_hand == marketing_event.threshold
       LowStockProductMarketingJob.perform_later(self.id, product_total_on_hand)
     end
   end

@@ -8,7 +8,7 @@
           <b><%= @social_media_marketing_event.name.titleize %></b>
         </div>
       </div>
-      <div class='row'>
+      <div class='row no-padding'>
         <div>
           <% class_to_use = eval(@social_media_marketing_event.class_to_use) %>
           <% if class_to_use::MARKUP_ALLOWED_METHODS.present? %>
@@ -26,9 +26,16 @@
             </div>
           <% end %>
         </div>
-        <div data-hook="message" class="form-group remaining_character_block">
+        <div data-hook="message">
           <%= label_tag :social_media_marketing_event_message, Spree.t(:message) %>
-          <%= text_area :social_media_marketing_event, :message, { :cols => 50, :rows => 4, :class => 'form-control social_media_post_message' } %>
+          <%= text_area :social_media_marketing_event, :message, { :cols => 50, :rows => 4, :class => 'form-control social_media_post_message character-limited', data: { character_limit: 120, remove_dynamic_code: true } } %>
+        </div>
+      </div>
+      <div class='row'>
+        <div class="col-md-11">
+        </div>
+        <div class="col-md-1 remaining_character_block" id='event-message-remaining-charachter-block'>
+          <span id='remaining_character_span'></span>
         </div>
       </div>
     </div>
@@ -41,6 +48,23 @@
           <%= check_box :social_media_marketing_event, :active %>
         </div>
       </div>
+    </div>
+    <div class="col-md-4">
+      <% if @social_media_marketing_event.name.match(/ Milestone$/) %>
+        <div data-hook="active" class="form-group">
+          <%= label_tag :social_media_marketing_event_threshold, Spree.t(:milestone) %>
+          <div class='input'>
+            <%= f.number_field :threshold %>
+          </div>
+        </div>
+      <% elsif @social_media_marketing_event.name == 'Low Stock Products' %>
+        <div data-hook="active" class="form-group">
+          <%= label_tag :social_media_marketing_event_threshold, Spree.t(:low_stock_threshold) %>
+          <div class='input'>
+            <%= f.number_field :threshold %>
+          </div>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>

@@ -3,6 +3,9 @@ module Spree
     validates :message, presence: true
     validate :message_is_parsable, if: :message_changed?
     validate :can_be_activated, if: :active_and_active_changed?
+    validate :message_without_methods_does_not_exceed_maxinmum_length
+
+    Spree::SocialMediaMarketingEvent::MessageMaximumLength = 120
 
     def get_parsed_message(instance, options = {})
       parse_string(get_instance_methods, instance, options)
@@ -16,6 +19,12 @@ module Spree
           parsed_message.gsub!(method, (options[method_name.to_sym] || instance.send(method_name)) || '')
         end
         parsed_message
+      end
+
+      def message_without_methods_does_not_exceed_maxinmum_length
+        if message.gsub(/<.*?>/, '').length > 120
+          errors.add(:message, 'without dynamic content can not be more than 120 charachters long')
+        end
       end
 
       def get_instance_methods

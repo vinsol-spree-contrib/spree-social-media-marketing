@@ -6,12 +6,15 @@ Spree::Product.class_eval do
   after_save :create_marketing_job, if: :available_on_changed_and_is_present?
 
   def get_social_marketing_message
-    marketing_event = Spree::SocialMediaMarketingEvent.find_by(name: 'product_creation')
     marketing_event.get_parsed_message(self)
   end
 
   def product_page
     product_url(self.id) if self.persisted?
+  end
+
+   def marketing_event
+    @marketing_event ||= Spree::SocialMediaMarketingEvent.find_by(name: 'Product Creation')
   end
 
   private
@@ -20,7 +23,7 @@ Spree::Product.class_eval do
     end
 
     def create_marketing_job
-      if Spree::SocialMediaMarketingEvent.find_by(name: 'product_creation').active?
+      if marketing_event.active?
         ProductMarketingJob.set(wait_until: self.available_on).perform_later(self.id)
       end
     end

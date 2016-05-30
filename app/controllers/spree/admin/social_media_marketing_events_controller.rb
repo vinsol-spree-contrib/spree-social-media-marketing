@@ -11,7 +11,7 @@ module Spree
       private
 
         def social_media_marketing_event_params
-          params.require(:social_media_marketing_event).permit(:message, :active)
+          params.require(:social_media_marketing_event).permit(:message, :active, :threshold)
         end
     end
   end

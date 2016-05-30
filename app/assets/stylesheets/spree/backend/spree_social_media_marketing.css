@@ -9,11 +9,6 @@ the installer will append this file to the app vendored assets here: 'vendor/ass
   vertical-align: middle;
 }
 
-#remaining_character_block {
-  line-height: 100px;
-  text-align: left;
-}
-
 #facebook_page_addition_button {
   margin-top: 20px;
 }
@@ -25,4 +20,17 @@ td.social-media-post-message-column {
 
 a#show-available-methods-link {
   cursor: pointer;
+}
+
+div.remaining_character_block {
+  color: red;
+  font-size: 18px;
+}
+
+div#event-message-remaining-charachter-block {
+  padding-left: 45px;
+}
+
+div.no-padding {
+  padding: 0px;
 }
