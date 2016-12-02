@@ -1,0 +1,43 @@
+<% content_for :page_title do %>
+  <%= @social_media_account.display_type %>
+<% end %>
+<% if @social_media_account.display_type == 'Facebook' %>
+  <% content_for :page_actions do %>
+    <% form_for [:admin, @social_media_account.pages.build] do |page_form| %>
+      <%= page_form.label :page_id, 'Page Id' %>
+      <%= page_form.text_field :page_id %>
+      <%= page_form.hidden_field :account_id, value: @social_media_account.id %>
+      <%= page_form.submit 'Add New Page', class: "btn-success", icon: 'add' %>
+    <% end %>
+  <% end %>
+
+  <div id="facebook-pages-list" data-hook>
+    <table class="table" id='listing_facebook_pages' data-hook>
+      <thead>
+        <tr data-hook="social_media_account_header">
+          <th><%= Spree.t(:page_id) %></th>
+          <th><%= Spree.t(:page_name) %></th>
+          <th class="actions">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @social_media_account.pages.select { |page| page.persisted? }.each do |page| %>
+          <tr>
+            <td>
+              <%= page.page_id %>
+            </td>
+            <td>
+              <%= page.name %>
+            </td>
+            <td>
+              <%= button_link_to 'Remove This Page', admin_facebook_page_path(page), method: :delete %>
+            </td>
+          </tr>
+        <% end %>
+        <% if @social_media_account.pages.select { |page| page.persisted? }.empty? %>
+          <tr><td colspan="3"><%= Spree.t(:none) %></td></tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>
