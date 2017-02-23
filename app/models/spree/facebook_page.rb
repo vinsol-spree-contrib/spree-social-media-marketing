@@ -46,12 +46,13 @@ module Spree
 
       ## TODO: What is assing?(done)
       def get_and_assign_page_access_token
+        ## This looks like a page query so can be removed with flow using Koala::Client::Error
         page_access_token_uri = URI("https://graph.facebook.com/#{ page_id }")
         page_access_token_uri.query = URI.encode_www_form(access_token: account.auth_token, fields: 'access_token')
         response = Net::HTTP.get_response(page_access_token_uri)
-        response_json = JSON.parse(response.body)
+        #response_json = JSON.parse(response.body)
         if response.code == '200'
-          self.page_token = response_json['access_token']
+          self.page_token = account.auth_token
           set_koala_client
           self.page_name = client.get_page(self.page_id)['name']
         else
