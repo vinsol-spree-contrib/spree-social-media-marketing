@@ -20,7 +20,7 @@ Spree::Order.class_eval do
   private
     def check_if_any_milestone_reached
       completed_order_size = Spree::Order.completed_order_count
-      if completed_order_size == self.class.marketing_event.threshold
+      if self.class.marketing_event && completed_order_size == self.class.marketing_event.threshold
         schedule_marketing_notifications(completed_order_size)
       end
     end

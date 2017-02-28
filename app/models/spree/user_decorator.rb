@@ -18,7 +18,7 @@ Spree.user_class.class_eval do
   private
     def check_if_any_milestone_reached
       user_count = Spree::user_class.customer_count
-      if user_count == self.class.marketing_event.threshold
+      if self.class.marketing_event && (user_count == self.class.marketing_event.threshold)
         schedule_marketing_notifications(user_count)
       end
     end
