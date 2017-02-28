@@ -13,7 +13,7 @@ Spree::Product.class_eval do
     product_url(self.id) if self.persisted?
   end
 
-   def marketing_event
+  def marketing_event
     @marketing_event ||= Spree::SocialMediaMarketingEvent.find_by(name: 'Product Creation')
   end
 
