@@ -6,9 +6,8 @@ module Spree
     has_many :posts, as: :social_media_publishable, class_name: 'Spree::SocialMediaPost'
 
     validates :page_id, presence: true, uniqueness: {message: 'has already been added'}
-    before_validation :get_and_assign_page_access_token
 
-    attr_accessor :client
+    before_save :get_and_assign_page_access_token
 
     def post(message, images = [])
       if images.present?
@@ -21,7 +20,6 @@ module Spree
     end
 
     def remove_post(post_id)
-      set_koala_client
       begin
         client.delete_object(post_id)
       rescue Koala::Facebook::ClientError => e
@@ -30,33 +28,25 @@ module Spree
     end
 
     private
-      def set_koala_client
-        self.client = Koala::Facebook::API.new(self.page_token)
+      def client
+        Koala::Facebook::API.new(page_token)
       end
 
       def post_message(message)
-        set_koala_client
-        client.put_connections(self.page_id, 'feed', message: message)
+        client.put_connections(page_id, 'feed', message: message)
       end
 
       def post_image(source_binary, caption = '')
-        set_koala_client
-        client.put_picture(source_binary, 'multipart/form-data', {message: caption}, self.page_id)
+        client.put_picture(source_binary, 'multipart/form-data', {message: caption}, page_id)
       end
 
-      ## TODO: What is assing?(done)
       def get_and_assign_page_access_token
-        page_access_token_uri = URI("https://graph.facebook.com/#{ page_id }")
-        page_access_token_uri.query = URI.encode_www_form(access_token: account.auth_token, fields: 'access_token')
-        response = Net::HTTP.get_response(page_access_token_uri)
-        response_json = JSON.parse(response.body)
-        if response.code == '200'
-          self.page_token = response_json['access_token']
-          set_koala_client
-          self.page_name = client.get_page(self.page_id)['name']
-        else
-          errors.add(:base, "Could not add this page. Please check the page id again and make sure you have appropriate permisions for this page")
-        end
+        user_graph = Koala::Facebook::API.new(account.auth_token)
+        self.page_token = user_graph.get_page_access_token(page_id)
+        self.page_name = Koala::Facebook::API.new(page_token).get_page(page_id)['name']
+      rescue Koala::Facebook::ClientError => e
+        errors.add(:page_id, "Access token not issued for page due to error #{e.message}")
+        Rails.logger.error("SocialMediaMarketing::SpreeFacebookPage::AssignPageToken Fails with error #{e.message}")
       end
   end
 end

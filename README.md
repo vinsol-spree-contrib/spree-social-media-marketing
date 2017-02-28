@@ -1,7 +1,33 @@
 SpreeSocialMediaMarketing
 =========================
+Spree Social Media Marketing helps making regular marketing tasks a breeze.
 
-Introduction goes here.
+It helps you with managing your Facebook and Twitter Marketing Accounts.
+You can post to Facebook and Twitter Accounts, right from the Spree Admin Console.
+It helps you create few Marketing Events which will trigger automatic posts to active Social
+Media Acconts.
+- A product selling fast will trigger a low stock marketing event which
+  will post a low stock message on social accounts.
+- When you are receiving bumper orders, you can market that.
+- A new payment method addition will trigger a post about its
+  availability.
+- A new product is available, gets posted automatically on your social
+  accounts
+- A new promotion can be immediately announced on social accounts
+- You want to boast of 1000 users onboard, can be posted automatically
+  on social accounts
+
+You are more of a DIY type, use the manual posting for each social
+account :)
+
+## Pre-requisites
+
+- You should have account on [Facebook Developers](https://developers.facebook.com)
+  - Create an App
+  - Create a Facebook Page in your account where you want to post
+    updates
+- You should have account on [Twitter Account](https://apps.twitter.com)
+  - Create an App
 
 ## Installation
 
@@ -23,9 +49,25 @@ Introduction goes here.
   bundle exec rails g spree_social_media_marketing:install
   ```
 
+3. Add `config/facebook.yml`
+  ```ruby
+  development:
+    app_id: 1234567
+    secret_key: abscdg
+
+  test:
+    app_id: 1234567
+    secret_key: abscdg
+  ```
+
+3. Note create a file\_name same as above with contents as below
+  - Only change the app\_id and secret\_key values, don't change the key
+    names
+
 4. Restart your server
 
   If your server was running, restart it so that it can find the assets properly.
+
 
 ## Testing
 
