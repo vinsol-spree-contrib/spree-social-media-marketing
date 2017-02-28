@@ -13,7 +13,7 @@ Spree::Product.class_eval do
     product_url(self.id) if self.persisted?
   end
 
-   def marketing_event
+  def marketing_event
     @marketing_event ||= Spree::SocialMediaMarketingEvent.find_by(name: 'Product Creation')
   end
 
@@ -23,7 +23,7 @@ Spree::Product.class_eval do
     end
 
     def create_marketing_job
-      if marketing_event.active?
+      if marketing_event && marketing_event.active?
         ProductMarketingJob.set(wait_until: self.available_on).perform_later(self.id)
       end
     end

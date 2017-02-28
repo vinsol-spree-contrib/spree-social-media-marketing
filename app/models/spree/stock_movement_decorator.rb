@@ -29,7 +29,7 @@ Spree::StockMovement.class_eval do
 
   def check_total_stock
     product_total_on_hand = self.stock_item.variant.product.total_on_hand
-    if marketing_event.active? && self.stock_item.variant.product.total_on_hand == marketing_event.threshold
+    if marketing_event && marketing_event.active? && self.stock_item.variant.product.total_on_hand == marketing_event.threshold
       LowStockProductMarketingJob.perform_later(self.id, product_total_on_hand)
     end
   end

@@ -20,7 +20,7 @@ Spree::Promotion.class_eval do
     end
 
     def create_marketing_job
-      if marketing_event.active?
+      if marketing_event && marketing_event.active?
         PromotionMarketingJob.set(wait_until: self.starts_at).perform_later(self.id)
       end
     end

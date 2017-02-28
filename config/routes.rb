@@ -11,7 +11,7 @@ Spree::Core::Engine.routes.draw do
     end
   end
 
-  get 'auth/:provider/callback', to: 'admin/social_media_accounts#create'
+  get 'auth/:provider/callback', to: 'admin/social_media_accounts#create', as: :oauth_redirect
   get 'auth/facebook', to: 'auth#facebook'
   get 'auth/twitter', to: 'auth#twitter'
   match 'auth/failure', to: redirect('/admin/social_media_accounts'), via: [:get, :post]

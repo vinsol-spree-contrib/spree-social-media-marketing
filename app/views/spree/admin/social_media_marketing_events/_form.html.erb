@@ -10,13 +10,13 @@
       </div>
       <div class='row no-padding'>
         <div>
-          <% class_to_use = eval(@social_media_marketing_event.class_to_use) %>
-          <% if class_to_use::MARKUP_ALLOWED_METHODS.present? %>
+          <% class_to_run = eval(@social_media_marketing_event.class_to_run) %>
+          <% if class_to_run::MARKUP_ALLOWED_METHODS.present? %>
             <div>
               Type the default post for <%= @social_media_marketing_event.name.titleize %> message. You can also add dynamic content to it by using simple markup. Example: &lt;method_name&gt;. <a data-toggle="collapse" data-target="#usable_methods_div" id='show-available-methods-link'>Show available methods.</a>
               <div id="usable_methods_div" class="collapse">
                 <ul>
-                  <% class_to_use::MARKUP_ALLOWED_METHODS.each do |method| %>
+                  <% class_to_run::MARKUP_ALLOWED_METHODS.each do |method| %>
                     <li>
                       <%= method %>
                     </li>
