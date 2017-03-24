@@ -33,7 +33,7 @@ module Spree
 
       def message_is_parsable
         begin
-          klass = eval(class_to_use)
+          klass = eval(class_to_run)
           if klass.respond_to?(:get_social_marketing_message)
             get_parsed_message(klass)
           elsif klass.new.respond_to?(:get_social_marketing_message)
