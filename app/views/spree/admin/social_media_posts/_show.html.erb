@@ -1,0 +1,49 @@
+<div id="posts-list" data-hook>
+  <h4>
+    Recent Posts
+  </h4>
+  <% if posts.empty? %>
+    <h5>You have no posts for this account.</h5>
+  <% else %>
+    <table class="table" id='listing_pages' data-hook>
+      <thead>
+        <tr data-hook="social_media_publishable_header">
+          <th><%= Spree.t(:post) %></th>
+          <th><%= Spree.t(:image) %></th>
+          <th><%= Spree.t(:error) %></th>
+          <th><%= Spree.t(:posted_at) %></th>
+          <th class="actions">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% posts.each do |post| %>
+          <tr>
+            <td class='social-media-post-message-column'>
+              <%= post.post_message %>
+            </td>
+            <td>
+              <%= image_tag post.images.first.attachment.url(:mini) if post.images.exists? %>
+            </td>
+            <td class='social-media-post-error-message-column'>
+              <%= post.error_message %>
+            </td>
+            <td>
+              <%= post.created_at.strftime('%Y-%m-%d %I:%M %p') %>
+            </td>
+            <td>
+              <%= link_to admin_social_media_post_path(post), method: :delete, class: 'btn btn-danger btn-sm icon-link with-tip action-delete no-text', data: { confirm: 'Are you sure you want to remove this post?', remote: false } do %>
+                <span class='icon icon-delete'></span>
+              <% end %>
+              <% unless post.post_id %>
+                <%= link_to repost_admin_social_media_post_path(post), method: :put, class: 'btn btn-primary btn-sm icon-link with-tip no-text', data: { remote: false } do %>
+                  <span class='icon glyphicon-retweet'></span>
+                <% end %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= render partial: 'spree/admin/shared/index_table_options', locals: { collection: posts } %>
+  <% end %>
+</div>

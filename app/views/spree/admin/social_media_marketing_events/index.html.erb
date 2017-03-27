@@ -1,0 +1,39 @@
+<% content_for :page_title do %>
+  Social Media Marketing Events
+<% end %>
+
+<% content_for :page_actions do %>
+  <%= link_to_with_icon 'arrow-left', Spree.t(:back_to_accounts), admin_social_media_accounts_path, class: 'btn btn-primary' %>
+<% end %>
+
+<div id="social-media-marketing-event-list" data-hook>
+  <table class="table" id='listing_social_media_marketing_events' data-hook>
+    <thead>
+      <tr data-hook="social_media_marketing_event_header">
+        <th><%= Spree.t(:name) %></th>
+        <th><%= Spree.t(:active) %></th>
+        <th class="actions">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @social_media_marketing_events.each do |marketing_event| %>
+        <tr>
+          <td>
+            <%= marketing_event.name.titleize %>
+          </td>
+          <td>
+            <%= marketing_event.active? ? 'Yes' : 'No' %>
+          </td>
+          <td>
+            <%= link_to edit_admin_social_media_marketing_event_path(marketing_event), class: 'btn btn-primary btn-sm icon-link with-tip action-edit no-text' do %>
+              <span class='icon icon-edit'></span>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+      <% if @social_media_marketing_events.empty? %>
+        <tr><td colspan="3"><%= Spree.t(:none) %></td></tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -1,43 +1,81 @@
 <% content_for :page_title do %>
-  <%= @social_media_account.display_type %>
+  <%= "#{ @social_media_account.display_account_name } Account" %>
+  <%= "for #{ @social_media_account.name }" if @social_media_account.name.present? %>
 <% end %>
-<% if @social_media_account.display_type == 'Facebook' %>
-  <% content_for :page_actions do %>
-    <% form_for [:admin, @social_media_account.pages.build] do |page_form| %>
-      <%= page_form.label :page_id, 'Page Id' %>
-      <%= page_form.text_field :page_id %>
-      <%= page_form.hidden_field :account_id, value: @social_media_account.id %>
-      <%= page_form.submit 'Add New Page', class: "btn-success", icon: 'add' %>
-    <% end %>
-  <% end %>
 
-  <div id="facebook-pages-list" data-hook>
-    <table class="table" id='listing_facebook_pages' data-hook>
-      <thead>
-        <tr data-hook="social_media_account_header">
-          <th><%= Spree.t(:page_id) %></th>
-          <th><%= Spree.t(:page_name) %></th>
-          <th class="actions">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @social_media_account.pages.select { |page| page.persisted? }.each do |page| %>
-          <tr>
-            <td>
-              <%= page.page_id %>
-            </td>
-            <td>
-              <%= page.name %>
-            </td>
-            <td>
-              <%= button_link_to 'Remove This Page', admin_facebook_page_path(page), method: :delete %>
-            </td>
+<% content_for :page_actions do %>
+  <%= link_to_with_icon 'arrow-left', Spree.t(:back_to_accounts), admin_social_media_accounts_path, class: 'btn btn-primary' %>
+<% end %>
+
+<% if @social_media_account.display_account_name == 'Facebook' %>
+  <div class='col-sm-10'>
+    <%= form_for [:admin, @social_media_account.pages.build] do |page_form| %>
+      <div class="panel panel-default" id="add-facebook-page" data-hook>
+        <div class="panel-heading">
+          <h1 class="panel-title">
+            <%= Spree.t(:add_facebook_page) %>  
+          </h1>
+        </div>
+        <div class="panel-body">
+          <div data-hook="add_facebook_page_id">
+            <%= page_form.label :page_id, 'Facebook Page Id' %>
+            <%= page_form.text_field :page_id %>
+            <%= page_form.hidden_field :account_id, value: @social_media_account.id %>
+            <div class="form-actions" data-hook="buttons">
+              <%= button Spree.t('Add Page'), 'ok', 'submit', {class: 'btn-success', id: 'facebook_page_addition_button', data: { disable_with: 'Adding...' }} %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <div id="facebook-pages-list" data-hook>
+      <table class="table" id='listing_facebook_pages' data-hook>
+        <thead>
+          <tr data-hook="social_media_account_header">
+            <th><%= Spree.t(:facebook_page_name) %></th>
+            <th class="actions">Actions</th>
           </tr>
-        <% end %>
-        <% if @social_media_account.pages.select { |page| page.persisted? }.empty? %>
-          <tr><td colspan="3"><%= Spree.t(:none) %></td></tr>
-        <% end %>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <% if @social_media_account.pages.select { |page| page.persisted? }.empty? %>
+            <tr><td colspan="3"><%= Spree.t(:none) %></td></tr>
+          <% else %>
+            <% @social_media_account.pages.select { |page| page.persisted? }.each do |page| %>
+              <tr>
+                <td>
+                  <%= page.page_name %>
+                </td>
+                <td>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <%= link_to admin_facebook_page_path(page), method: :delete, class: 'btn btn-danger btn-sm icon-link with-tip action-delete no-text', data: { confirm: 'Are you sure you want to remove this page?' } do %>
+                        <span class='icon icon-delete'></span>
+                      <% end %>
+                      <%= link_to admin_facebook_page_path(page), class: 'btn btn-primary btn-sm icon-link with-tip action-edit no-text' do %>
+                        <span class='icon icon-edit'></span>
+                      <% end %>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   </div>
+<% elsif @social_media_account.display_account_name == 'Twitter' %>
+  <div class='panel panel-default'>
+    <div class='panel-heading'>
+      <h1 class='panel-title'>
+        Post a message on this Twitter Account
+      </h1>
+    </div>
+    <div class='panel-body'>
+      <%= form_for [:admin, Spree::SocialMediaPost.new] do |post_form| %>
+        <%= render 'spree/admin/social_media_posts/form', { post_form: post_form, social_media_publishable_id: @social_media_account.id, social_media_publishable_type: 'Spree::SocialMediaAccount', limit_message_characters: true } %>
+      <% end %>
+    </div>
+  </div>
+  <%= render 'spree/admin/social_media_posts/show', { posts: @posts } %>
 <% end %>

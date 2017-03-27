@@ -5,18 +5,32 @@ module Spree
       def create
         account_uid = request.env['omniauth.auth']['uid']
         account_type = "Spree::#{request.env['omniauth.auth']['provider'].capitalize}Account"
+        token = request.env['omniauth.auth']['credentials']['token']
+        if params[:code]
+          access_token = Koala::Facebook::OAuth.new.exchange_access_token_info(token)["access_token"]
+        else
+          access_token = nil
+        end
         social_media_account = current_store.social_media_accounts.find_or_initialize_by(uid: account_uid, type: account_type).tap do |account|
           account.assign_attributes(get_media_account_fields)
+          if access_token
+            account.auth_token = access_token
+          else
+            account.errors.add(:auth_token, "Missing token")
+          end
         end
         if social_media_account.save
           flash[:success] = 'Account Saved'
         else
-          flash[:error] = social_media_account.errors.full_messages.join('\n')
+          flash[:error] = social_media_account.errors.full_messages.join(', ')
         end
         redirect_to admin_social_media_accounts_path
       end
 
       def show
+        if @social_media_account.display_account_name == 'Twitter'
+          @posts = @social_media_account.posts.order("created_at desc").page(params[:page]).per(params[:per_page])
+        end
       end
 
       private
@@ -34,7 +48,7 @@ module Spree
           if request.env['omniauth.auth']['provider'] == 'twitter'
             media_account_fields.merge!(auth_secret: request.env['omniauth.auth']['credentials']['secret'])
           end
-            
+
           media_account_fields
         end
     end

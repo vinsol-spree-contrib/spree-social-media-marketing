@@ -3,8 +3,9 @@
 <% end %>
 
 <% content_for :page_actions do %>
-  <%= button_link_to Spree.t(:add_facebook_account), auth_facebook_url, { class: "btn-success", icon: 'add', id: 'new_facebook_account_link' } %>
-  <%= button_link_to Spree.t(:add_twitter_account), auth_twitter_url, { class: "btn-success", icon: 'add', id: 'new_twitter_account_link' } %>
+  <%= button_link_to Spree.t(:view_events), admin_social_media_marketing_events_path, { class: "btn-success", id: 'new_facebook_account_link' } %>
+  <%= button_link_to Spree.t(:facebook_account), auth_facebook_url, { class: "btn-success", icon: 'add', id: 'new_facebook_account_link' } %>
+  <%= button_link_to Spree.t(:twitter_account), auth_twitter_url, { class: "btn-success", icon: 'add', id: 'new_twitter_account_link' } %>
 
 <% end %>
 
@@ -13,7 +14,7 @@
     <thead>
       <tr data-hook="social_media_account_header">
         <th><%= Spree.t(:type) %></th>
-        <th><%= Spree.t(:name) %></th>
+        <th><%= Spree.t(:account_name) %></th>
         <th class="actions">Actions</th>
       </tr>
     </thead>
@@ -21,13 +22,15 @@
       <% @social_media_accounts.each do |account| %>
         <tr>
           <td>
-            <%= account.display_type %>
+            <%= account.display_account_name %>
           </td>
           <td>
             <%= account.name %>
           </td>
           <td>
-            <%= link_to 'View', admin_social_media_account_path(account) %>
+            <%= link_to admin_social_media_account_path(account), class: 'btn btn-primary btn-sm icon-link with-tip action-edit no-text' do %>
+              <span class='icon icon-edit'></span>
+            <% end %>
           </td>
         </tr>
       <% end %>

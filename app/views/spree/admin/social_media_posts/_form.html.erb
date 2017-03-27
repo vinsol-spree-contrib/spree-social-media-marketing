@@ -1,0 +1,41 @@
+<%= post_form.hidden_field :social_media_publishable_id, value: social_media_publishable_id %>
+<%= post_form.hidden_field :social_media_publishable_type, value: social_media_publishable_type %>
+<div>
+  <div class="row no-padding">
+    <div class="col-md-12">
+      <div class="col-md-4">
+        <%= post_form.fields_for post_form.object.images.build do |image_form| %>
+          <div data-hook="file">
+            <%= image_form.label :attachment, Spree.t(:image) %>
+            <%= image_form.file_field :attachment %>
+          </div>
+        <% end %>
+      </div>
+      <div class="col-md-8">
+        <div data-hook="message"=>
+          <%= post_form.label :post_message, 'Message' %>
+          <%= post_form.text_area :post_message, class: "form-control #{ 'character-limited' if limit_message_characters }", rows: 4, data: { character_limit: 140, remove_dynamic_code: false } %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class='row'>
+    <% if limit_message_characters %>
+      <div class="col-md-8">
+      </div>
+      <div class="col-md-1 remaining_character_block">
+        <span id='remaining_character_span'></span>
+      </div>
+      <div class="col-md-3">
+      </div>
+    <% end %>
+  </div>
+</div>
+<%= button Spree.t('Submit New Post'), 'ok', 'submit', { class: 'btn-success', data: { disable_with: 'Submitting...' } } %>
+
+
+
+
+
+
+

@@ -1,15 +1,16 @@
-class << Spree::PaymentMethod
-  include Spree::Core::Engine.routes.url_helpers
-end
-
-
 Spree::PaymentMethod.class_eval do
-  include Spree::Core::Engine.routes.url_helpers
+  include Spree::SocialMediaUrlHelpers
+
+  Spree::PaymentMethod::MARKUP_ALLOWED_METHODS = [:name, :home_page]
 
   after_save :create_marketing_job, if: :active_and_active_changed?
 
   def get_social_marketing_message
-    "Hey there, we have activated a new payment method on our store. You can now pay by #{ self.name }. Check out the store at #{ self.root_url(host: (Rails.application.config.action_mailer.default_url_options[:host] || 'localhost:3000')) }"
+    marketing_event.get_parsed_message(self)
+  end
+
+  def marketing_event
+    @marketing_event ||= Spree::SocialMediaMarketingEvent.find_by(name: 'Payment Method Creation')
   end
 
   private
@@ -19,6 +20,8 @@ Spree::PaymentMethod.class_eval do
     end
 
     def create_marketing_job
-      PaymentMethodMarketingJob.perform_later(self.id)
+      if marketing_event && marketing_event.active?
+        PaymentMethodMarketingJob.perform_later(self.id)
+      end
     end
 end

@@ -1,0 +1,22 @@
+<% content_for :page_title do %>
+  <%= "Facebook Page: #{ @page.page_name }" %>
+<% end %>
+
+<% content_for :page_actions do %>
+  <%= link_to_with_icon 'arrow-left', Spree.t(:back_to_account), admin_social_media_account_path(@page.account), class: 'btn btn-primary' %>
+<% end %>
+
+<div class='panel panel-default'>
+  <div class='panel-heading'>
+    <h1 class='panel-title'>
+      Post a message on this Facebook page
+    </h1>
+  </div>
+  <div class='panel-body'>
+    <%= form_for [:admin, Spree::SocialMediaPost.new] do |post_form| %>
+      <%= render 'spree/admin/social_media_posts/form', { post_form: post_form, social_media_publishable_id: @page.id, social_media_publishable_type: 'Spree::FacebookPage', limit_message_characters: false } %>
+    <% end %>
+  </div>
+</div>
+
+<%= render 'spree/admin/social_media_posts/show', { posts: @posts } %>

@@ -1,31 +1,31 @@
-class << Spree.user_class
-  include Spree::Core::Engine.routes.url_helpers
-end
-
 Spree.user_class.class_eval do
 
-  Spree.user_class::MILESTONES = [1000, 2000, 5000]
+  Spree.user_class::MARKUP_ALLOWED_METHODS = [:customer_count, :home_page]
 
   after_create :check_if_any_milestone_reached
 
-  def self.get_social_marketing_message(milestone)
-    "Hurray. We have reached #{ milestone } users. Check out the store at #{ self.root_url(host: (Rails.application.config.action_mailer.default_url_options[:host] || 'localhost:3000')) }"
+  def self.get_social_marketing_message(milestone = 0)
+    marketing_event.get_parsed_message(self, { customer_count: milestone.to_s })
   end
 
+  def self.customer_count
+    (Spree.user_class.count - Spree.user_class.admin.count).to_s
+  end
+
+  def self.marketing_event
+    @marketing_event ||= Spree::SocialMediaMarketingEvent.find_by(name: 'User Milestone')
+  end
   private
     def check_if_any_milestone_reached
-      customer_count = get_customer_count
-      if customer_count.in?(Spree.user_class::MILESTONES)
-        milestone_reached(customer_count)
+      user_count = Spree::user_class.customer_count
+      if self.class.marketing_event && (user_count == self.class.marketing_event.threshold)
+        schedule_marketing_notifications(user_count)
       end
     end
 
-    def milestone_reached(milestone)
-      UserMilestoneMarketingJob.perform_later(milestone)
-    end
-
-    # This is placeholder method. Developers can override this to get the number of cutomers as per their app and roles.
-    def get_customer_count
-      Spree.user_class.count - Spree.user_class.admin.count
+    def schedule_marketing_notifications(milestone)
+      if self.class.marketing_event.active?
+        UserMilestoneMarketingJob.perform_later(milestone)
+      end
     end
 end
