@@ -44,25 +44,42 @@ account :)
   bundle install
   ```
 
+   - Add `gem 'koala'` with desired version in SpreeCommerce Store Rails App `Gemfile` to avoid undefined constant error :(
+
 3. Copy & run migrations
   ```ruby
   bundle exec rails g spree_social_media_marketing:install
   ```
 
-3. Add `config/facebook.yml`
-  ```ruby
-  development:
-    app_id: 1234567
-    secret_key: abscdg
+3. Set Social Accounts API key credentials in Rails secrets (config/secrets.yml)
 
-  test:
-    app_id: 1234567
-    secret_key: abscdg
-  ```
+  - Facebook
 
-3. Note create a file\_name same as above with contents as below
-  - Only change the app\_id and secret\_key values, don't change the key
-    names
+    ```ruby
+    # config/secrets.yml
+    development:
+      facebook_app_secret: 1234567
+      facebook_app_key: abscdg
+
+    test:
+      facebook_app_secret: 1234567
+      facebook_app_key: abscdg
+    ```
+
+  - Twitter
+
+    ```ruby
+    # config/secrets.yml
+    development:
+      twitter_consumer_key: 1234567
+      twitter_consumer_secret: abscdg
+
+    test:
+      twitter_consumer_key: 1234567
+      twitter_consumer_secret: abscdg
+    ```
+
+  - **NOTE** : Use the key names same as above :)
 
 4. Restart your server
 
