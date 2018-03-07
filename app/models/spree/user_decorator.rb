@@ -2,6 +2,7 @@ Spree.user_class.class_eval do
 
   Spree.user_class::MARKUP_ALLOWED_METHODS = [:customer_count, :home_page]
 
+  has_many :posts, class_name: 'Spree::SocialMediaPost'
   after_create :check_if_any_milestone_reached
 
   def self.get_social_marketing_message(milestone = 0)

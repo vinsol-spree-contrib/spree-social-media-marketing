@@ -3,9 +3,9 @@ module Spree
   class FacebookPage < ActiveRecord::Base
 
     belongs_to :account, class_name: 'Spree::FacebookAccount', foreign_key: :account_id
-    has_many :posts, as: :social_media_publishable, class_name: 'Spree::SocialMediaPost'
+    has_many :posts, as: :social_media_publishable, class_name: 'Spree::SocialMediaPost', dependent: :destroy
 
-    validates :page_id, presence: true, uniqueness: {message: 'has already been added'}
+    validates :page_id, presence: true, uniqueness: { message: 'has already been added' }
 
     before_save :get_and_assign_page_access_token
 

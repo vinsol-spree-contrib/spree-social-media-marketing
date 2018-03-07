@@ -13,16 +13,17 @@
       <div class="panel panel-default" id="add-facebook-page" data-hook>
         <div class="panel-heading">
           <h1 class="panel-title">
-            <%= Spree.t(:add_facebook_page) %>  
+            <%= Spree.t(:add_facebook_page) %>
           </h1>
         </div>
         <div class="panel-body">
           <div data-hook="add_facebook_page_id">
             <%= page_form.label :page_id, 'Facebook Page Id' %>
             <%= page_form.text_field :page_id %>
+            <span class='icon icon-info-sign with-tip' title='You can find page id in about section of your page.'></span>
             <%= page_form.hidden_field :account_id, value: @social_media_account.id %>
             <div class="form-actions" data-hook="buttons">
-              <%= button Spree.t('Add Page'), 'ok', 'submit', {class: 'btn-success', id: 'facebook_page_addition_button', data: { disable_with: 'Adding...' }} %>
+              <%= button Spree.t('Add Page'), 'ok', 'submit', { class: 'btn-success', id: 'facebook_page_addition_button', data: { disable_with: 'Adding...' } } %>
             </div>
           </div>
         </div>
@@ -52,7 +53,7 @@
                         <span class='icon icon-delete'></span>
                       <% end %>
                       <%= link_to admin_facebook_page_path(page), class: 'btn btn-primary btn-sm icon-link with-tip action-edit no-text' do %>
-                        <span class='icon icon-edit'></span>
+                        <span class='icon icon-cog with-tip' title='Post Content'></span>
                       <% end %>
                     </div>
                   </div>

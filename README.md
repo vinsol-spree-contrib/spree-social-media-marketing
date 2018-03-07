@@ -51,7 +51,13 @@ account :)
   bundle exec rails g spree_social_media_marketing:install
   ```
 
-3. Set Social Accounts API key credentials in Rails secrets (config/secrets.yml)
+  You can also seed the default marketing events with:
+
+  ```ruby
+  bundle exec rails g spree_social_media_marketing:seed
+  ```
+
+4. Set Social Accounts API key credentials in Rails secrets (config/secrets.yml)
 
   - Facebook
 
@@ -81,7 +87,7 @@ account :)
 
   - **NOTE** : Use the key names same as above :)
 
-4. Restart your server
+5. Restart your server
 
   If your server was running, restart it so that it can find the assets properly.
 
