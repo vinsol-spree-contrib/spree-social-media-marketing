@@ -25,8 +25,8 @@
             <%= marketing_event.active? ? 'Yes' : 'No' %>
           </td>
           <td>
-            <%= link_to edit_admin_social_media_marketing_event_path(marketing_event), class: 'btn btn-primary btn-sm icon-link with-tip action-edit no-text' do %>
-              <span class='icon icon-edit'></span>
+            <%= link_to edit_admin_social_media_marketing_event_path(marketing_event), title: 'Manage', class: 'btn btn-primary btn-sm icon-link with-tip action-edit no-text' do %>
+              <span class='icon icon-cog'></span>
             <% end %>
           </td>
         </tr>

@@ -33,7 +33,7 @@
               <%= post.error_message %>
             </td>
             <td>
-              <%= post.user.email %>
+              <%= post.user.try(:email) %>
             </td>
             <td>
               <%= post.created_at.strftime('%Y-%m-%d %I:%M %p') %>

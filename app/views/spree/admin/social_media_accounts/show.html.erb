@@ -20,7 +20,7 @@
           <div data-hook="add_facebook_page_id">
             <%= page_form.label :page_id, 'Facebook Page Id' %>
             <%= page_form.text_field :page_id %>
-            <span class='icon icon-info-sign with-tip' title='You can find page id in about section of your page.'></span>
+            <span class='icon icon-info-sign with-tip' title='You can find page id in About section of your page.'></span>
             <%= page_form.hidden_field :account_id, value: @social_media_account.id %>
             <div class="form-actions" data-hook="buttons">
               <%= button Spree.t('Add Page'), 'ok', 'submit', { class: 'btn-success', id: 'facebook_page_addition_button', data: { disable_with: 'Adding...' } } %>

@@ -1,6 +1,6 @@
 class PaymentMethodMarketingJob < ActiveJob::Base
   queue_as :social_marketing
- 
+
   def perform(payment_method_id)
     payment_method = Spree::PaymentMethod.find_by(id: payment_method_id)
     if payment_method && payment_method.active?

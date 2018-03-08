@@ -23,7 +23,7 @@ module Spree
 
       def message_without_methods_does_not_exceed_maxinmum_length
         if message.gsub(/<.*?>/, '').length > 120
-          errors.add(:message, 'without dynamic content can not be more than 120 charachters long')
+          errors.add(:message, 'without dynamic content can not be more than 120 characters long')
         end
       end
 

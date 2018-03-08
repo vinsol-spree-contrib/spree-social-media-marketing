@@ -1,5 +1,5 @@
 e = Spree::SocialMediaMarketingEvent.find_or_initialize_by(name: 'Product Creation').tap do |event|
-  event.message = "Hey there, we have launched a new product on our store. <name>"
+  event.message = "Hey there, we have launched a new product in our store. <name>"
   event.class_to_run = 'Spree::Product'
   event.run_time = 'future'
 end
