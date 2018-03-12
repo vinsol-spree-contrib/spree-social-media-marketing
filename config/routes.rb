@@ -4,7 +4,7 @@ Spree::Core::Engine.routes.draw do
     resources :social_media_accounts
     resources :social_media_marketing_events
     resources :facebook_pages, only: [:create, :destroy, :show]
-    resources :social_media_posts, only: [:create, :destroy] do
+    resources :social_media_posts, only: [:new, :create, :destroy] do
       member do
         put :repost
       end

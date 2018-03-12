@@ -1,0 +1,41 @@
+<% content_for :page_title do %>
+  <%= link_to Spree.t(:new_post), new_admin_social_media_post_path %>
+<% end %>
+
+<%= form_for [:admin, Spree::SocialMediaPost.new] do |post_form| %>
+  <div>
+    <div class="row no-padding">
+      <div class="col-md-12">
+        <div class="col-md-4">
+          <%= post_form.fields_for post_form.object.images.build do |image_form| %>
+            <div data-hook="file">
+              <%= image_form.label :attachment, Spree.t(:image) %>
+              <%= image_form.file_field :attachment %>
+            </div>
+          <% end %>
+        </div>
+        <div class="col-md-8">
+          <div data-hook="message"=>
+            <%= post_form.label :post_message, 'Message' %>
+            <%= post_form.text_area :post_message, class: "form-control", rows: 4, data: { remove_dynamic_code: false } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <table class="table table-condensed table-bordered index socail-media-accounts-table">
+    <thead>
+      <tr data-hook="rma_header">
+        <th>
+          <%= check_box_tag 'select-all' %>
+        </th>
+        <th><%= Spree.t(:account_name) %></th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+
+<% end %>

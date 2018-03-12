@@ -1,18 +1,36 @@
 module Spree
   class SocialMediaMarketingEvent < ActiveRecord::Base
-    validates :message, presence: true
-    validate :message_is_parsable, if: :message_changed?
+    validates :fb_message, :twitter_message, presence: true
     validate :can_be_activated, if: :active_and_active_changed?
     validate :message_without_methods_does_not_exceed_maxinmum_length
+    validate :check_fb_message, if: :fb_message_changed?
+    validate :check_twitter_message, if: :twitter_message_changed?
 
-    Spree::SocialMediaMarketingEvent::MessageMaximumLength = 120
+    has_many :social_media_events_accounts, class_name: 'Spree::SocialMediaEventsAccount'
+    has_many :facebook_accounts, through: :social_media_events_accounts, source: :social_media_marketing_account, source_type: 'Spree::FacebookPage'
+    has_many :twitter_accounts, through: :social_media_events_accounts, source: :social_media_marketing_account, source_type: 'Spree::SocialMediaAccount'
 
-    def get_parsed_message(instance, options = {})
-      parse_string(get_instance_methods, instance, options)
+    accepts_nested_attributes_for :social_media_events_accounts, allow_destroy: true
+
+    def get_parsed_message(instance, type='facebook', options = {})
+      parse_string(get_instance_methods(type), instance, type, options)
+    end
+
+    def linked_social_media_accounts
+      facebook_accounts + twitter_accounts
+    end
+
+    def all_social_media_accounts
+      Spree::FacebookPage.all + Spree::TwitterAccount.all
+    end
+
+    def unlinked_social_media_accounts
+      all_social_media_accounts - linked_social_media_accounts
     end
 
     private
-      def parse_string(methods, instance, options = {})
+      def parse_string(methods, instance, type='facebook', options = {})
+        message = type.eql?('facebook') ? fb_message : twitter_message
         parsed_message = message.dup
         methods.each do |method|
           method_name = method[1, (method.length - 2)]
@@ -22,22 +40,31 @@ module Spree
       end
 
       def message_without_methods_does_not_exceed_maxinmum_length
-        if message.gsub(/<.*?>/, '').length > 120
-          errors.add(:message, 'without dynamic content can not be more than 120 characters long')
+        if twitter_message.gsub(/<.*?>/, '').length > Spree::TwitterAccount::MESSAGE_MAXIMUM_LENGTH
+          errors.add(:twitter_message, "without dynamic content can not be more than #{ Spree::TwitterAccount::MESSAGE_MAXIMUM_LENGTH } characters long")
         end
       end
 
-      def get_instance_methods
+      def get_instance_methods(type='facebook')
+        message = type.eql?('facebook') ? fb_message : twitter_message
         methods = message.scan(/(<.*?>)/).flatten.uniq
       end
 
-      def message_is_parsable
+      def check_fb_message
+        message_is_parsable('facebook')
+      end
+
+      def check_twitter_message
+        message_is_parsable('twitter')
+      end
+
+      def message_is_parsable(type)
         begin
           klass = eval(class_to_run)
           if klass.respond_to?(:get_social_marketing_message)
-            get_parsed_message(klass)
+            get_parsed_message(klass, type)
           elsif klass.new.respond_to?(:get_social_marketing_message)
-            get_parsed_message(klass.new)
+            get_parsed_message(klass.new, type)
           end
         rescue StandardError => e
           errors.add(:base, 'Some of the methods used in the message are not valid. Please check the methods list.')

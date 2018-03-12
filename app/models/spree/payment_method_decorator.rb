@@ -5,8 +5,8 @@ Spree::PaymentMethod.class_eval do
 
   after_save :create_marketing_job, if: :active_and_active_changed?
 
-  def get_social_marketing_message
-    marketing_event.get_parsed_message(self)
+  def get_social_marketing_message(type='facebook')
+    marketing_event.get_parsed_message(self, type)
   end
 
   def marketing_event
@@ -21,7 +21,7 @@ Spree::PaymentMethod.class_eval do
 
     def create_marketing_job
       if marketing_event && marketing_event.active?
-        PaymentMethodMarketingJob.perform_later(self.id)
+        PaymentMethodMarketingJob.perform_later(self.id, marketing_event)
       end
     end
 end

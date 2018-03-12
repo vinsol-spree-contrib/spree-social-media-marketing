@@ -26,9 +26,13 @@
             </div>
           <% end %>
         </div>
-        <div data-hook="message">
-          <%= label_tag :social_media_marketing_event_message, Spree.t(:message) %>
-          <%= text_area :social_media_marketing_event, :message, { :cols => 50, :rows => 4, :class => 'form-control social_media_post_message character-limited', data: { character_limit: 120, remove_dynamic_code: true } } %>
+        <div data-hook="fb_message">
+          <%= label_tag :social_media_marketing_event_message, Spree.t(:fb_message) %>
+          <%= text_area :social_media_marketing_event, :fb_message, { :cols => 50, :rows => 4, :class => 'form-control social_media_post_message', data: { remove_dynamic_code: true } } %>
+        </div>
+        <div data-hook="twitter_message">
+          <%= label_tag :social_media_marketing_event_message, Spree.t(:twitter_message) %>
+          <%= text_area :social_media_marketing_event, :twitter_message, { :cols => 50, :rows => 4, :class => 'form-control social_media_post_message character-limited', data: { character_limit: Spree::TwitterAccount::MESSAGE_MAXIMUM_LENGTH, remove_dynamic_code: true } } %>
         </div>
       </div>
       <div class='row'>
@@ -40,6 +44,31 @@
       </div>
     </div>
   </div>
+
+  <table class="table table-condensed table-bordered index social-media-account-table">
+    <thead>
+      <tr data-hook="rma_header">
+        <th></th>
+        <th><%= Spree.t(:account_name) %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= f.fields_for :social_media_events_accounts do |q| %>
+        <% events_account = q.object %>
+        <tr>
+          <td>
+            <%= q.check_box :_destroy, { checked: events_account.persisted? }, '0', '1' %>
+            <%= q.hidden_field :social_media_marketing_account_id  %>
+            <%= q.hidden_field :social_media_marketing_account_type  %>
+          </td>
+          <td>
+            <div class="account-name">
+              <%= display_account_name(events_account) %>
+            </div>
+          </td>
+      <% end %>
+    </tbody>
+  </table>
   <div class='row'>
     <div class="col-md-2">
       <div data-hook="active" class="form-group">
