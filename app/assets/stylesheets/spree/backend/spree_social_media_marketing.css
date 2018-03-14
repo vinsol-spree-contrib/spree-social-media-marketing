@@ -5,12 +5,7 @@ the installer will append this file to the app vendored assets here: 'vendor/ass
 
 
 #social_media_post_post_message {
-  width: 400px;
   vertical-align: middle;
-}
-
-#facebook_page_addition_button {
-  margin-top: 20px;
 }
 
 td.social-media-post-message-column, td.social-media-post-error-message-column {
@@ -24,7 +19,6 @@ a#show-available-methods-link {
 
 div.remaining_character_block {
   color: red;
-  font-size: 18px;
 }
 
 div#event-message-remaining-charachter-block {

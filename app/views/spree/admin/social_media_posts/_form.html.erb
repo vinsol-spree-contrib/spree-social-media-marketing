@@ -3,6 +3,7 @@
 <div>
   <div class="row no-padding">
     <div class="col-md-12">
+    <div class="row">
       <div class="col-md-4">
         <%= post_form.fields_for post_form.object.images.build do |image_form| %>
           <div data-hook="file">
@@ -15,23 +16,21 @@
         <div data-hook="message"=>
           <%= post_form.label :post_message, 'Message' %>
           <%= post_form.text_area :post_message, class: "form-control #{ 'character-limited' if limit_message_characters }", rows: 4, data: { character_limit: 240, remove_dynamic_code: false } %>
+          <% if limit_message_characters %>
+            <div class="remaining_character_block text-right">
+              <span id='remaining_character_span'></span>
+            </div>
+          <% end %>
         </div>
       </div>
     </div>
+    </div>
   </div>
-  <div class='row'>
-    <% if limit_message_characters %>
-      <div class="col-md-8">
-      </div>
-      <div class="col-md-1 remaining_character_block">
-        <span id='remaining_character_span'></span>
-      </div>
-      <div class="col-md-3">
-      </div>
-    <% end %>
-  </div>
+
 </div>
-<%= button Spree.t('Submit New Post'), 'ok', 'submit', { class: 'btn-success', data: { disable_with: 'Submitting...' } } %>
+<div class="text-right">
+  <%= button Spree.t('Submit New Post'), 'ok', 'submit', { class: 'btn-success', data: { disable_with: 'Submitting...' } } %>
+</div>
 
 
 

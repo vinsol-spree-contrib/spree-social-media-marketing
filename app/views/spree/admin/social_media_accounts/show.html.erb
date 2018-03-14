@@ -18,13 +18,23 @@
         </div>
         <div class="panel-body">
           <div data-hook="add_facebook_page_id">
-            <%= page_form.label :page_id, 'Facebook Page Id' %>
-            <%= page_form.text_field :page_id %>
-            <span class='icon icon-info-sign with-tip' title='You can find page id in About section of your page.'></span>
-            <%= page_form.hidden_field :account_id, value: @social_media_account.id %>
-            <div class="form-actions" data-hook="buttons">
-              <%= button Spree.t('Add Page'), 'ok', 'submit', { class: 'btn-success', id: 'facebook_page_addition_button', data: { disable_with: 'Adding...' } } %>
+
+            <div class="col-md-8 col-md-offset-2">
+              <div class="input-group">
+                <span class="input-group-addon" id="basic-addon3"><%= page_form.label :page_id, 'Facebook Page Id' %></span>
+              <%= page_form.hidden_field :account_id, value: @social_media_account.id %>
+
+                <!-- <input class="form-control" aria-label="Text input with multiple buttons" dcvalue=""> -->
+                <%= page_form.text_field :page_id, class: 'form-control' %>
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default with-tip" aria-label="Help" title='You can find page id in About section of your page.'>
+                    <span class='icon icon-info-sign ' ></span>
+                  </button>
+                  <%= button Spree.t('Add Page'), 'ok', 'submit', { class: 'btn-success', id: 'facebook_page_addition_button', data: { disable_with: 'Adding...' } } %>
+                </div>
+              </div>
             </div>
+
           </div>
         </div>
       </div>
@@ -34,7 +44,7 @@
         <thead>
           <tr data-hook="social_media_account_header">
             <th><%= Spree.t(:facebook_page_name) %></th>
-            <th class="actions">Actions</th>
+            <th class="actions" width="100">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -46,17 +56,13 @@
                 <td>
                   <%= page.page_name %>
                 </td>
-                <td>
-                  <div class="row">
-                    <div class="col-md-12">
-                      <%= link_to admin_facebook_page_path(page), method: :delete, class: 'btn btn-danger btn-sm icon-link with-tip action-delete no-text', data: { confirm: 'Are you sure you want to remove this page?' } do %>
-                        <span class='icon icon-delete'></span>
-                      <% end %>
-                      <%= link_to admin_facebook_page_path(page), class: 'btn btn-primary btn-sm icon-link with-tip action-edit no-text' do %>
-                        <span class='icon icon-cog with-tip' title='Post Content'></span>
-                      <% end %>
-                    </div>
-                  </div>
+                <td nowrap>
+                  <%= link_to admin_facebook_page_path(page), method: :delete, class: 'btn btn-danger btn-sm icon-link with-tip action-delete no-text', data: { confirm: 'Are you sure you want to remove this page?' } do %>
+                    <span class='icon icon-delete'></span>
+                  <% end %>
+                  <%= link_to admin_facebook_page_path(page), class: 'btn btn-primary btn-sm icon-link with-tip action-edit no-text' do %>
+                    <span class='icon icon-cog with-tip' title='Post Content'></span>
+                  <% end %>
                 </td>
               </tr>
             <% end %>

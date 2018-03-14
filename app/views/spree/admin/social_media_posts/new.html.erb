@@ -7,71 +7,75 @@
 <% end %>
 
 <%= form_for(@post, url: create_with_account_admin_social_media_posts_path) do |post_form| %>
-  <div>
-    <div class="row no-padding">
-      <div class="col-md-12">
-        <div class="col-md-4">
-          <%= post_form.fields_for post_form.object.images.build do |image_form| %>
-            <div data-hook="file">
-              <%= image_form.label :attachment, Spree.t(:image) %>
-              <%= image_form.file_field :attachment %>
-            </div>
-          <% end %>
-        </div>
-        <div class="col-md-8">
-          <div data-hook="message"=>
-            <%= post_form.label :post_message, 'Message' %>
-            <%= post_form.text_area :post_message, class: "form-control message", rows: 4, data: { remove_dynamic_code: false } %>
+  <div class="row no-padding">
+    <div class="col-md-9">
+    <div class="row">
+      <div class="col-md-4">
+        <%= post_form.fields_for post_form.object.images.build do |image_form| %>
+          <div data-hook="file">
+            <%= image_form.label :attachment, Spree.t(:image) %>
+            <%= image_form.file_field :attachment %>
           </div>
+        <% end %>
+      </div>
+      <div class="col-md-8">
+        <div data-hook="message"=>
+          <%= post_form.label :post_message, 'Message' %>
+          <%= post_form.text_area :post_message, class: "form-control message", rows: 4, data: { remove_dynamic_code: false } %>
         </div>
       </div>
     </div>
-
-    <div data-hook="fb_message">
-      <%= post_form.label :fb_message, 'Facebook Message' %>
-      <%= post_form.text_area :fb_message, class: "form-control fb-message", rows: 4 %>
-    </div>
-    <div data-hook="twitter_message">
-      <%= post_form.label :twitter_message, 'Twitter Message' %>
-      <%= post_form.text_area :twitter_message, class: "form-control twitter-message character-limited", rows: 4, data: { character_limit: 280 } %>
     </div>
   </div>
-  <div class='row'>
-    <div class="col-md-8">
-    </div>
-    <div class="col-md-1 remaining_character_block">
-      <span id='remaining_character_span'></span>
-    </div>
-    <div class="col-md-3">
+  <div class="row">
+    <div class="col-md-9">
+      <div class='row no-padding'>
+      <div class='col-md-12'>
+        <div data-hook="fb_message">
+          <%= post_form.label :fb_message, 'Facebook Message' %>
+          <%= post_form.text_area :fb_message, class: "form-control fb-message", rows: 4 %>
+        </div>
+        <div data-hook="twitter_message">
+          <%= post_form.label :twitter_message, 'Twitter Message' %>
+          <%= post_form.text_area :twitter_message, class: "form-control twitter-message character-limited", rows: 4, data: { character_limit: 280 } %>
+          <div class="remaining_character_block text-right" id='event-message-remaining-charachter-block'>
+            <span id='remaining_character_span'></span>
+          </div>
+        </div>
+      </div>
+      </div>
     </div>
   </div>
-
-  <table class="table table-condensed table-bordered index socail-media-accounts-table">
-    <thead>
-      <tr data-hook="rma_header">
-        <th></th>
-        <th><%= Spree.t(:account_name) %></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% get_all_social_media_accounts.each do |account| %>
-      <tr>
-        <td>
-          <% if account.instance_of?(Spree::FacebookPage) %>
-            <%= check_box_tag "social_media_publishable[facebook_page][]", account.id, false %>
-          <% else %>
-            <%= check_box_tag "social_media_publishable[twitter_account][]", account.id, false %>
+  <div class="row">
+    <div class="col-md-9">
+      <table class="table table-condensed table-bordered index socail-media-accounts-table">
+        <thead>
+          <tr data-hook="rma_header">
+            <th></th>
+            <th><%= Spree.t(:account_name) %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% get_all_social_media_accounts.each do |account| %>
+          <tr>
+            <td>
+              <% if account.instance_of?(Spree::FacebookPage) %>
+                <%= check_box_tag "social_media_publishable[facebook_page][]", account.id, false %>
+              <% else %>
+                <%= check_box_tag "social_media_publishable[twitter_account][]", account.id, false %>
+              <% end %>
+            </td>
+            <td>
+              <%= display_account_name(account) %>
+            </td>
+          </tr>
           <% end %>
-        </td>
-        <td>
-          <%= display_account_name(account) %>
-        </td>
-      </tr>
-      <% end %>
-    </tbody>
-  </table>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
   <%= button Spree.t('Submit New Post'), 'ok', 'submit', { class: 'btn-success', data: { disable_with: 'Submitting...' } } %>
-
+  <%= button_link_to Spree.t('actions.cancel'), admin_social_media_accounts_path, :icon => 'delete' %>
 
 <% end %>
