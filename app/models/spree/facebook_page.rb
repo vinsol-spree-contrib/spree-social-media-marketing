@@ -4,7 +4,7 @@ module Spree
 
     belongs_to :account, class_name: 'Spree::FacebookAccount', foreign_key: :account_id
     has_many :posts, as: :social_media_publishable, class_name: 'Spree::SocialMediaPost', dependent: :destroy
-    has_many :social_media_events_accounts, as: :social_media_marketing_account
+    has_many :social_media_events_accounts, as: :social_media_marketing_account, dependent: :destroy
     has_many :social_media_events, through: :social_media_events_accounts, source: :social_media_marketing_event
 
     validates :page_id, presence: true, uniqueness: { message: 'has already been added' }

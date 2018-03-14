@@ -4,7 +4,7 @@ module Spree
 
     has_many :posts, as: :social_media_publishable, class_name: 'Spree::SocialMediaPost', dependent: :destroy
 
-    has_many :social_media_events_accounts, as: :social_media_marketing_account
+    has_many :social_media_events_accounts, as: :social_media_marketing_account, dependent: :destroy
     has_many :social_media_events, through: :social_media_events_accounts, source: :social_media_marketing_event
 
     MESSAGE_MAXIMUM_LENGTH = 240

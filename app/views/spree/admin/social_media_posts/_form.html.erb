@@ -14,7 +14,7 @@
       <div class="col-md-8">
         <div data-hook="message"=>
           <%= post_form.label :post_message, 'Message' %>
-          <%= post_form.text_area :post_message, class: "form-control #{ 'character-limited' if limit_message_characters }", rows: 4, data: { character_limit: 140, remove_dynamic_code: false } %>
+          <%= post_form.text_area :post_message, class: "form-control #{ 'character-limited' if limit_message_characters }", rows: 4, data: { character_limit: 240, remove_dynamic_code: false } %>
         </div>
       </div>
     </div>
