@@ -40,14 +40,18 @@ module Spree
       def create_with_account
         @social_media_post_ids = []
         @errors = []
-        build_posts_with_social_media_account('facebook_page') if params[:social_media_publishable][:facebook_page]
-        build_posts_with_social_media_account('twitter_account') if params[:social_media_publishable][:twitter_account]
-        if @errors.empty?
-          redirect_to new_admin_social_media_post_path, flash: { success: 'Post Added' }
+        if params[:social_media_publishable].blank?
+          flash[:error] = 'Please select accounts'
         else
-          flash[:error] = @errors.uniq.join(', ')
-          redirect_to :back
+          build_posts_with_social_media_account('facebook_page') if params[:social_media_publishable][:facebook_page]
+          build_posts_with_social_media_account('twitter_account') if params[:social_media_publishable][:twitter_account]
+          if @errors.empty?
+            flash[:success] =  'Post Added'
+          else
+            flash[:error] = @errors.uniq.join(', ')
+          end
         end
+        redirect_to :back
       end
 
       private

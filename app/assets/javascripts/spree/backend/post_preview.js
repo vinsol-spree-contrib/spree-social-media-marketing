@@ -10,8 +10,14 @@ PostPreview.prototype.previewFbMessage = function() {
   this.$fbMessageContainer.val(this.messageValue);
 };
 
+PostPreview.prototype.truncateMessage = function() {
+  return $.trim(this.messageValue).substring(0, this.twitterMessageLength);
+};
+
 PostPreview.prototype.previewTwitterMessage = function() {
-  this.$twitterMessageContainer.val($.trim(this.messageValue).substring(0, this.twitterMessageLength));
+  this.$twitterMessageContainer.val(this.truncateMessage());
+  var characterLimiter = new CharacterLimiter();
+  characterLimiter.checkCharacterCount();
 };
 
 PostPreview.prototype.onMessageChange = function() {

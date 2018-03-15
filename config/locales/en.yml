@@ -3,3 +3,25 @@
 
 en:
   hello: "Hello world"
+
+  spree:
+    back_to_accounts: Back to Accounts
+    view_linked_events: View Linked Events
+    facebook_account: Facebook
+    twitter_account: Twitter
+    new_post: New Post
+    account_name: Account Name
+    back_to_account: Back to Account
+    add_facebook_page: Add Facebook Page
+    add_page: Add Page
+    facebook_page_name: Facebook Page Name
+    fb_message: FB Message
+    twitter_message: Twitter Message
+    milestone: Milestone
+    low_stock_threshold: Low Stock Threshold
+    Events: Events
+    submit_new_post: Submit New Post
+    s_no: S No
+    post: Post
+    posted_at: Posted At
+    posted_by: Posted By

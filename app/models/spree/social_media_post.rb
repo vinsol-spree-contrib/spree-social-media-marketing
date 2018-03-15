@@ -12,7 +12,7 @@ module Spree
     ## TODO: Why is this limit present? Should be only for Twitter. Also, extract to a constant.(done)
     ## TODO: Add validations for presence of social_media_publishable
     validates :post_message, presence: true
-    validates :post_message, length: { maximum: 280 }, if: :social_media_publishable_is_twitter_account?
+    validates :post_message, length: { maximum: Spree::TwitterAccount::MAXIMUM_TWEET_LENGTH }, if: :social_media_publishable_is_twitter_account?
     validates :social_media_publishable, presence: true
     accepts_nested_attributes_for :images
 
@@ -29,7 +29,7 @@ module Spree
     end
 
     def truncate_message_length
-      self.post_message = post_message.truncate(280)
+      self.post_message = post_message.truncate(Spree::TwitterAccount::MAXIMUM_TWEET_LENGTH)
     end
 
     private

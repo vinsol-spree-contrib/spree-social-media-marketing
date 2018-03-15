@@ -1,5 +1,8 @@
 module Spree
   class SocialMediaMarketingEvent < ActiveRecord::Base
+
+    TWITTER_MESSAGE_MAXIMUM_LENGTH = 240
+
     validates :fb_message, :twitter_message, presence: true
     validate :can_be_activated, if: :active_and_active_changed?
     validate :message_without_methods_does_not_exceed_maxinmum_length
@@ -40,8 +43,8 @@ module Spree
       end
 
       def message_without_methods_does_not_exceed_maxinmum_length
-        if twitter_message.gsub(/<.*?>/, '').length > Spree::TwitterAccount::MESSAGE_MAXIMUM_LENGTH
-          errors.add(:twitter_message, "without dynamic content can not be more than #{ Spree::TwitterAccount::MESSAGE_MAXIMUM_LENGTH } characters long")
+        if twitter_message.gsub(/<.*?>/, '').length > TWITTER_MESSAGE_MAXIMUM_LENGTH
+          errors.add(:twitter_message, "without dynamic content can not be more than #{ TWITTER_MESSAGE_MAXIMUM_LENGTH } characters long")
         end
       end
 

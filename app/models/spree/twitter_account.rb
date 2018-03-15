@@ -2,12 +2,11 @@ module Spree
   class TwitterAccount < SocialMediaAccount
     require 'twitter'
 
-    has_many :posts, as: :social_media_publishable, class_name: 'Spree::SocialMediaPost', dependent: :destroy
+    MAXIMUM_TWEET_LENGTH = 280
 
+    has_many :posts, as: :social_media_publishable, class_name: 'Spree::SocialMediaPost', dependent: :destroy
     has_many :social_media_events_accounts, as: :social_media_marketing_account, dependent: :destroy
     has_many :social_media_events, through: :social_media_events_accounts, source: :social_media_marketing_event
-
-    MESSAGE_MAXIMUM_LENGTH = 240
 
     Spree::TwitterAccount::IMAGE_LIMIT = 4
     attr_accessor :client
@@ -15,8 +14,14 @@ module Spree
     def post(tweet, images = [])
       if images.present?
         first_four_images = images[0, Spree::TwitterAccount::IMAGE_LIMIT]
+        image_ids = []
         image_binaries = first_four_images.map(&:get_image_binary)
-        response = post_tweet_with_media(tweet, image_binaries)
+        image_binaries.each do |image_binary|
+          upload_response = upload_media(image_binary)
+          image_id = upload_response.instance_of?(Hash) ? upload_response[:media_id] : upload_response
+          image_ids << image_id
+        end
+        response = post_tweet(tweet, media_ids: image_ids.join(','))
       else
         response = post_tweet(tweet)
       end
@@ -37,14 +42,14 @@ module Spree
     end
 
     private
-      def post_tweet_with_media(tweet, media, options = {})
-        set_twitter_client
-        client.update_with_media(tweet, media, options)
-      end
-
       def post_tweet(tweet, options = {})
         set_twitter_client
         client.update(tweet, options)
+      end
+
+      def upload_media(media)
+        set_twitter_client
+        client.send(:upload, media)
       end
 
       def set_twitter_client

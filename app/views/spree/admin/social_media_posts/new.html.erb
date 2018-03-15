@@ -37,7 +37,7 @@
         </div>
         <div data-hook="twitter_message">
           <%= post_form.label :twitter_message, 'Twitter Message' %>
-          <%= post_form.text_area :twitter_message, class: "form-control twitter-message character-limited", rows: 4, data: { character_limit: 280 } %>
+          <%= post_form.text_area :twitter_message, class: "form-control twitter-message character-limited", rows: 4, data: { character_limit: Spree::TwitterAccount::MAXIMUM_TWEET_LENGTH } %>
           <div class="remaining_character_block text-right" id='event-message-remaining-charachter-block'>
             <span id='remaining_character_span'></span>
           </div>
@@ -75,7 +75,7 @@
     </div>
   </div>
 
-  <%= button Spree.t('Submit New Post'), 'ok', 'submit', { class: 'btn-success', data: { disable_with: 'Submitting...' } } %>
+  <%= button Spree.t(:submit_new_post), 'ok', 'submit', { class: 'btn-success', data: { disable_with: 'Submitting...' } } %>
   <%= button_link_to Spree.t('actions.cancel'), admin_social_media_accounts_path, :icon => 'delete' %>
 
 <% end %>

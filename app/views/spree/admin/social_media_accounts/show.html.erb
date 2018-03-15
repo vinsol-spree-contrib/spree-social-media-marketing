@@ -30,7 +30,7 @@
                   <button type="button" class="btn btn-default with-tip" aria-label="Help" title='You can find page id in About section of your page.'>
                     <span class='icon icon-info-sign ' ></span>
                   </button>
-                  <%= button Spree.t('Add Page'), 'ok', 'submit', { class: 'btn-success', id: 'facebook_page_addition_button', data: { disable_with: 'Adding...' } } %>
+                  <%= button Spree.t(:add_page), 'ok', 'submit', { class: 'btn-success', id: 'facebook_page_addition_button', data: { disable_with: 'Adding...' } } %>
                 </div>
               </div>
             </div>
@@ -57,7 +57,7 @@
                   <%= page.page_name %>
                 </td>
                 <td nowrap>
-                  <%= link_to admin_facebook_page_path(page), method: :delete, class: 'btn btn-danger btn-sm icon-link with-tip action-delete no-text', data: { confirm: 'Are you sure you want to remove this page?' } do %>
+                  <%= link_to admin_facebook_page_path(page), method: :delete, class: 'btn btn-danger btn-sm icon-link with-tip action-delete no-text', title: 'Remove Page', data: { confirm: 'Are you sure you want to remove this page?' } do %>
                     <span class='icon icon-delete'></span>
                   <% end %>
                   <%= link_to admin_facebook_page_path(page), class: 'btn btn-primary btn-sm icon-link with-tip action-edit no-text' do %>

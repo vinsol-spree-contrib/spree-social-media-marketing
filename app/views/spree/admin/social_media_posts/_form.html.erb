@@ -15,7 +15,7 @@
       <div class="col-md-8">
         <div data-hook="message"=>
           <%= post_form.label :post_message, 'Message' %>
-          <%= post_form.text_area :post_message, class: "form-control #{ 'character-limited' if limit_message_characters }", rows: 4, data: { character_limit: 240, remove_dynamic_code: false } %>
+          <%= post_form.text_area :post_message, class: "form-control #{ 'character-limited' if limit_message_characters }", rows: 4, data: { character_limit: Spree::TwitterAccount::MAXIMUM_TWEET_LENGTH, remove_dynamic_code: false } %>
           <% if limit_message_characters %>
             <div class="remaining_character_block text-right">
               <span id='remaining_character_span'></span>
@@ -29,7 +29,7 @@
 
 </div>
 <div class="text-right">
-  <%= button Spree.t('Submit New Post'), 'ok', 'submit', { class: 'btn-success', data: { disable_with: 'Submitting...' } } %>
+  <%= button Spree.t(:submit_new_post), 'ok', 'submit', { class: 'btn-success', data: { disable_with: 'Submitting...' } } %>
 </div>
 
 
