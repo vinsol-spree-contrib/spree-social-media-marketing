@@ -10,6 +10,9 @@
             <%= image_form.label :attachment, Spree.t(:image) %>
             <%= image_form.file_field :attachment %>
           </div>
+          <% if limit_message_characters %>
+            <br><span> Upto 5MB </span>
+          <% end %>
         <% end %>
       </div>
       <div class="col-md-8">
