@@ -16,7 +16,7 @@
             <%= image_form.label :attachment, Spree.t(:image) %>
             <%= image_form.file_field :attachment %>
           </div><br>
-          <span> Upto 5MB for Twitter </span>
+          <span> Upto <%= Spree::PostImage::MAXIMUM_IMAGE_SIZE %>MB </span>
         <% end %>
       </div>
       <div class="col-md-8">

@@ -12,7 +12,7 @@ module Spree
         @social_media_post = Spree::SocialMediaPost.new(post_params)
 
         ## TODO: We don't need .present(done)
-        if params[:social_media_post][:image]
+        if params[:social_media_post][:post_image]
           @social_media_post.images.build(post_image_params)
         end
 
@@ -40,7 +40,7 @@ module Spree
 
       def create_with_account
         @post = Spree::SocialMediaPost.new(post_with_account_params)
-        @post.images.build(post_image_params) if params[:social_media_post][:image]
+        @post.images.build(post_image_params) if params[:social_media_post][:post_image]
         response = @post.create_fb_twitter_posts
         if response.instance_of?(ActiveModel::Errors)
           flash[:error] = response.full_messages.join(', ')
@@ -69,7 +69,7 @@ module Spree
         end
 
         def post_image_params
-          params.require(:social_media_post).require(:image).permit(:attachment)
+          params.require(:social_media_post).require(:post_image).permit(:attachment)
         end
 
         def post_fb_accounts_params

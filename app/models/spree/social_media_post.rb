@@ -7,7 +7,7 @@ module Spree
     belongs_to :social_media_publishable, polymorphic: true
     belongs_to :user, class_name: 'Spree::User'
     has_many :social_media_post_images, dependent: :destroy
-    has_many :images, through: :social_media_post_images
+    has_many :images, through: :social_media_post_images, source: :post_image
 
     ## TODO: Why is this limit present? Should be only for Twitter. Also, extract to a constant.(done)
     ## TODO: Add validations for presence of social_media_publishable
