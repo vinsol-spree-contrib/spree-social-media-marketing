@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.require_path = 'lib'
   s.requirements << 'none'
 
-  spree_version = '>= 3.1.0', '< 4.0.0'
+  spree_version = '~> 3.1.0'
 
   s.add_dependency 'spree_core', spree_version
 
@@ -28,7 +28,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'koala'
   s.add_runtime_dependency 'omniauth-facebook'
 
-  s.add_development_dependency 'appraisal'
   s.add_development_dependency 'capybara', '~> 2.6'
   s.add_development_dependency 'coffee-rails'
   s.add_development_dependency 'database_cleaner'
