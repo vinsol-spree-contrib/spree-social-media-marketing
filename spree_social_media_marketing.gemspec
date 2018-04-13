@@ -2,7 +2,7 @@
 Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.name        = 'spree_social_media_marketing'
-  s.version     = '3.0.0'
+  s.version     = '3.1.0'
   s.summary     = 'This gem is to automatically advertise on social media about new products, promotions and milestones.'
   s.description = 'Use this gem to add social media account to the store and automatically post about any new products, promotions, and milestones.'
   s.required_ruby_version = '>= 2.1.0'
@@ -21,12 +21,12 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'spree_core', spree_version
 
-  s.add_runtime_dependency 'omniauth'
+  s.add_runtime_dependency 'omniauth', '~> 1.8.1'
   s.add_runtime_dependency 'oa-core'
-  s.add_runtime_dependency 'twitter'
-  s.add_runtime_dependency 'omniauth-twitter'
+  s.add_runtime_dependency 'twitter', '~> 5.15.0'
+  s.add_runtime_dependency 'omniauth-twitter', '~> 1.4.0'
   s.add_runtime_dependency 'koala'
-  s.add_runtime_dependency 'omniauth-facebook'
+  s.add_runtime_dependency 'omniauth-facebook', '~> 4.0.0'
 
   s.add_development_dependency 'capybara', '~> 2.6'
   s.add_development_dependency 'coffee-rails'
