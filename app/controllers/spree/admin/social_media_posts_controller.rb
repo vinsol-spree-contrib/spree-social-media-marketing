@@ -1,8 +1,8 @@
 module Spree
   module Admin
     class SocialMediaPostsController < Spree::Admin::ResourceController
-      before_filter :fetch_post, only: [:destroy, :repost]
-      before_filter :check_social_media_accounts, only: :create_with_account
+      before_action :fetch_post, only: [:destroy, :repost]
+      before_action :check_social_media_accounts, only: :create_with_account
 
       def new
         @post = Spree::SocialMediaPost.new
@@ -21,7 +21,7 @@ module Spree
         else
           flash[:error] = @social_media_post.errors.full_messages.join(', ')
         end
-        redirect_to :back
+        redirect_back fallback_location: root_path
       end
 
       def destroy
@@ -30,12 +30,12 @@ module Spree
         else
           flash[:error] = 'Could Not Remove Post'
         end
-        redirect_to :back
+        redirect_back fallback_location: root_path
       end
 
       def repost
         @post.send_post_and_assign_post_id
-        redirect_to :back
+        redirect_back fallback_location: root_path
       end
 
       def create_with_account
@@ -56,7 +56,7 @@ module Spree
         def fetch_post
           unless @post = Spree::SocialMediaPost.find_by(id: params[:id])
             flash[:alert] = 'Post Does Not Exist'
-            redirect_to :back
+            redirect_back fallback_location: root_path
           end
         end
 

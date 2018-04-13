@@ -1,4 +1,4 @@
-class CreateSocialMediaEventAccounts < ActiveRecord::Migration
+class CreateSocialMediaEventAccounts < ActiveRecord::Migration[4.2]
   def change
     create_table :spree_social_media_events_accounts do |t|
       t.integer :social_media_marketing_event_id

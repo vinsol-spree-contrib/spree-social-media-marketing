@@ -17,16 +17,16 @@ Gem::Specification.new do |s|
   s.require_path = 'lib'
   s.requirements << 'none'
 
-  spree_version = '>= 3.1.0', '< 4.0.0'
+  spree_version = '>= 3.2.0', '< 4.0.0'
 
   s.add_dependency 'spree_core', spree_version
 
-  s.add_runtime_dependency 'omniauth'
+  s.add_runtime_dependency 'omniauth', '~> 1.8.1'
   s.add_runtime_dependency 'oa-core'
-  s.add_runtime_dependency 'twitter'
-  s.add_runtime_dependency 'omniauth-twitter'
+  s.add_runtime_dependency 'twitter',  '~> 5.15.0'
+  s.add_runtime_dependency 'omniauth-twitter', '~> 1.4.0'
   s.add_runtime_dependency 'koala'
-  s.add_runtime_dependency 'omniauth-facebook'
+  s.add_runtime_dependency 'omniauth-facebook', '~> 4.0.0'
 
   s.add_development_dependency 'appraisal'
   s.add_development_dependency 'capybara', '~> 2.6'
