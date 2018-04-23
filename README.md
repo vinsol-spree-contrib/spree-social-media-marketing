@@ -33,7 +33,7 @@ account :)
 
 1. Add this extension to your Gemfile with this line:
   ```ruby
-  gem 'spree_social_media_marketing', github: '[your-github-handle]/spree-social-media-marketing', branch: 'X-X-stable'
+  gem 'spree_social_media_marketing', github: 'vinsol-spree-contrib/spree-social-media-marketing', branch: '3-1-stable'
   ```
 
   The `branch` option is important: it must match the version of Spree you're using.
