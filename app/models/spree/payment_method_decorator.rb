@@ -3,7 +3,8 @@ Spree::PaymentMethod.class_eval do
 
   Spree::PaymentMethod::MARKUP_ALLOWED_METHODS = [:name, :home_page]
 
-  after_save :create_marketing_job, if: :active_and_active_changed?
+  after_create :create_marketing_job, if: :active?
+  after_update :create_marketing_job, if: :active_and_active_changed?
 
   def get_social_marketing_message(type='facebook')
     marketing_event.get_parsed_message(self, type)
