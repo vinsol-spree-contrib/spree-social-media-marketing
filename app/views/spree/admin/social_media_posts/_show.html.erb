@@ -8,16 +8,21 @@
     <table class="table" id='listing_pages' data-hook>
       <thead>
         <tr data-hook="social_media_publishable_header">
+          <th><%= Spree.t(:s_no) %></th>
           <th><%= Spree.t(:post) %></th>
           <th><%= Spree.t(:image) %></th>
           <th><%= Spree.t(:error) %></th>
+          <th><%= Spree.t(:posted_by) %></th>
           <th><%= Spree.t(:posted_at) %></th>
           <th class="actions">Actions</th>
         </tr>
       </thead>
       <tbody>
-        <% posts.each do |post| %>
+        <% posts.each.with_index(1) do |post, index| %>
           <tr>
+            <td>
+              <%= index %>
+            </td>
             <td class='social-media-post-message-column'>
               <%= post.post_message %>
             </td>
@@ -28,15 +33,18 @@
               <%= post.error_message %>
             </td>
             <td>
+              <%= post.user.try(:email) %>
+            </td>
+            <td>
               <%= post.created_at.strftime('%Y-%m-%d %I:%M %p') %>
             </td>
             <td>
-              <%= link_to admin_social_media_post_path(post), method: :delete, class: 'btn btn-danger btn-sm icon-link with-tip action-delete no-text', data: { confirm: 'Are you sure you want to remove this post?', remote: false } do %>
+              <%= link_to admin_social_media_post_path(post), method: :delete, title: 'Remove Post', class: 'btn btn-danger btn-sm icon-link with-tip action-delete no-text', data: { confirm: 'Are you sure you want to remove this post?', remote: false } do %>
                 <span class='icon icon-delete'></span>
               <% end %>
               <% unless post.post_id %>
-                <%= link_to repost_admin_social_media_post_path(post), method: :put, class: 'btn btn-primary btn-sm icon-link with-tip no-text', data: { remote: false } do %>
-                  <span class='icon glyphicon-retweet'></span>
+                <%= link_to repost_admin_social_media_post_path(post), method: :put, title: 'Repost', class: 'btn btn-primary btn-sm icon-link with-tip no-text', data: { remote: false } do %>
+                  <span class='icon icon-retweet'></span>
                 <% end %>
               <% end %>
             </td>

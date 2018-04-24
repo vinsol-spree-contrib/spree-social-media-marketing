@@ -5,8 +5,8 @@ Spree::Promotion.class_eval do
 
   after_save :create_marketing_job, if: :starts_at_changed_and_is_present?
 
-  def get_social_marketing_message
-    marketing_event.get_parsed_message(self)
+  def get_social_marketing_message(type='facebook')
+    marketing_event.get_parsed_message(self, type)
   end
 
   def marketing_event
@@ -21,7 +21,7 @@ Spree::Promotion.class_eval do
 
     def create_marketing_job
       if marketing_event && marketing_event.active?
-        PromotionMarketingJob.set(wait_until: self.starts_at).perform_later(self.id)
+        PromotionMarketingJob.set(wait_until: self.starts_at).perform_later(self.id, marketing_event)
       end
     end
 end

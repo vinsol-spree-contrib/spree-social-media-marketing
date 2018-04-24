@@ -3,9 +3,10 @@
 <% end %>
 
 <% content_for :page_actions do %>
-  <%= button_link_to Spree.t(:view_events), admin_social_media_marketing_events_path, { class: "btn-success", id: 'new_facebook_account_link' } %>
+  <%= button_link_to Spree.t(:view_linked_events), admin_social_media_marketing_events_path, { class: "btn-success", id: 'view_linked_events_link' } %>
   <%= button_link_to Spree.t(:facebook_account), auth_facebook_url, { class: "btn-success", icon: 'add', id: 'new_facebook_account_link' } %>
   <%= button_link_to Spree.t(:twitter_account), auth_twitter_url, { class: "btn-success", icon: 'add', id: 'new_twitter_account_link' } %>
+  <%= button_link_to Spree.t(:new_post), new_admin_social_media_post_path, { class: "btn-success", icon: 'add', id: 'new_post_link' } %>
 
 <% end %>
 
@@ -28,8 +29,11 @@
             <%= account.name %>
           </td>
           <td>
-            <%= link_to admin_social_media_account_path(account), class: 'btn btn-primary btn-sm icon-link with-tip action-edit no-text' do %>
-              <span class='icon icon-edit'></span>
+            <%= link_to admin_social_media_account_path(account), method: :delete, title: 'Remove', class: 'btn btn-danger btn-sm icon-link with-tip action-delete no-text', data: { confirm: 'Are you sure you want to remove this account?', remote: false } do %>
+                <span class='icon icon-delete'></span>
+              <% end %>
+            <%= link_to admin_social_media_account_path(account), title: 'Manage', class: 'btn btn-primary btn-sm icon-link with-tip action-edit no-text' do %>
+              <span class='icon icon-cog'></span>
             <% end %>
           </td>
         </tr>
