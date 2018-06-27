@@ -50,7 +50,7 @@ module Spree
         rescue Koala::Facebook::ClientError => e
           Rails.logger.error("SocialMediaMarketing::SpreeFacebookPage::AssignPageToken Fails with error #{e.message}")
           errors.add(:page_id, "Access token not issued for page due to error: #{e.fb_error_message}")
-          false
+          throw :abort
         end
       end
   end
