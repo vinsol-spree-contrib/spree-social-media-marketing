@@ -10,7 +10,7 @@ Spree::Order.class_eval do
 
   # This is placeholder method. Developers can override this to get the number of orders as per their app.
   def self.completed_order_count
-    Spree::Order.complete.count.to_s
+    Spree::Order.complete.count
   end
 
   def self.marketing_event
