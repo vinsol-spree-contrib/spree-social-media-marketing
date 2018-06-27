@@ -1,0 +1,106 @@
+<% content_for :page_title do %>
+  <%= link_to Spree.t(:new_post), new_admin_social_media_post_path %>
+<% end %>
+
+<% content_for :page_actions do %>
+  <%= link_to_with_icon 'arrow-left', Spree.t(:back_to_accounts), admin_social_media_accounts_path, class: 'btn btn-primary' %>
+<% end %>
+
+<%= form_for(@post, url: create_with_account_admin_social_media_posts_path) do |post_form| %>
+  <div class="row no-padding">
+    <div class="col-md-9">
+    <div class="row">
+      <div class="col-md-4">
+        <%= post_form.fields_for post_form.object.images.build do |image_form| %>
+          <div data-hook="file">
+            <%= image_form.label :attachment, Spree.t(:image) %>
+            <%= image_form.file_field :attachment %>
+          </div><br>
+          <span> Upto <%= Spree::PostImage::MAXIMUM_IMAGE_SIZE %>MB </span>
+        <% end %>
+      </div>
+      <div class="col-md-8">
+        <div data-hook="message"=>
+          <%= post_form.label :post_message, 'Message' %> <span class="required">*</span>
+          <%= post_form.text_area :post_message, class: "form-control message", rows: 4, data: { remove_dynamic_code: false } %>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-9">
+      <div class='row no-padding'>
+      <div class='col-md-12'>
+        <div data-hook="fb_message">
+          <%= post_form.label :fb_message, 'Facebook Message' %>
+          <%= post_form.text_area :fb_message, class: "form-control fb-message", rows: 4 %>
+        </div>
+        <div data-hook="twitter_message">
+          <%= post_form.label :twitter_message, 'Twitter Message' %>
+          <%= post_form.text_area :twitter_message, class: "form-control twitter-message character-limited", rows: 4, data: { character_limit: Spree::TwitterAccount::MAXIMUM_TWEET_LENGTH } %>
+          <div class="remaining_character_block text-right" id='event-message-remaining-charachter-block'>
+            <span id='remaining_character_span'></span>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-9">
+      <table class="table table-condensed table-bordered index socail-media-accounts-table">
+        <thead>
+          <tr data-hook="rma_header">
+            <th></th>
+            <th><%= Spree.t(:account_name) %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% get_all_social_media_accounts.each do |account| %>
+          <tr data-type='social-media-accounts'>
+            <td>
+              <% if account.instance_of?(Spree::FacebookPage) %>
+                <%= post_form.check_box :fb_accounts, { multiple: true, checked: set_checked(account.id.to_s, post_form.object.fb_accounts), data: { type: 'fb-account', name: display_account_name(account) } } , account.id, false %>
+              <% else %>
+                <%= post_form.check_box :twitter_accounts, { multiple: true, checked: set_checked(account.id.to_s, post_form.object.twitter_accounts), data: { type: 'twitter-account', name: display_account_name(account) } }, account.id, false %>
+              <% end %>
+            </td>
+            <td>
+              <%= display_account_name_with_social_platform(account) %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <%= button Spree.t(:submit_new_post), 'ok', 'button', { class: 'btn-success', data: { toggle: 'modal', target: '#confirm_publish', type: 'confirm-modal' } } %>
+  <%= button_link_to Spree.t('actions.cancel'), admin_social_media_accounts_path, :icon => 'delete' %>
+
+  <!-- Modal -->
+  <div class="modal fade" id="confirm_publish" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Confirm</h4>
+        </div>
+        <div class="modal-body">
+          <p data-type='error-message'>Please select accounts and Try Again</p>
+          <p data-type='confirm-message'>Post will be posted on the following accounts:- </p>
+          <p data-container='fb_accounts'></p>
+          <p data-container='twitter_accounts'></p>
+        </div>
+        <div class="modal-footer">
+          <%= button Spree.t(:submit_new_post), 'ok', 'submit', { class: 'btn-success', data: { disable_with: 'Submitting...', type: 'form-button' } } %>
+          <%= button Spree.t(:close), '', 'button', { class: 'btn-default', data: { dismiss: 'modal' } } %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<% end %>

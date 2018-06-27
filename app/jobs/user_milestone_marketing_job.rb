@@ -1,7 +1,9 @@
 class UserMilestoneMarketingJob < ActiveJob::Base
   queue_as :social_marketing
- 
-  def perform(milestone)
-    Spree::SocialMediaPostingService.create_post_and_send_on_media_accounts(Spree.user_class.get_social_marketing_message(milestone))
+
+  def perform(milestone, marketing_event)
+    facebook_message = Spree.user_class.get_social_marketing_message('facebook', milestone)
+    twitter_message = Spree.user_class.get_social_marketing_message('twitter', milestone)
+    Spree::SocialMediaPostingService.create_post_and_send_on_media_accounts(marketing_event, facebook_message, twitter_message)
   end
 end

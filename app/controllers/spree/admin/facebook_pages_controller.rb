@@ -1,8 +1,8 @@
 module Spree
   module Admin
     class FacebookPagesController < Spree::Admin::ResourceController
-      before_filter :fetch_account, only: [:create]
-      before_filter :fetch_page, only: [:destroy, :show]
+      before_action :fetch_account, only: [:create]
+      before_action :fetch_page, only: [:destroy, :show]
 
       ## TODO: Don't think we need these actions. Please see Spree::Admin::ResourceController
       def create
@@ -23,7 +23,7 @@ module Spree
         else
           flash[:alert] = 'Could Not Remove Page'
         end
-        redirect_to :back
+        redirect_back fallback_location: root_path
       end
 
       def show
@@ -40,14 +40,14 @@ module Spree
           unless @account = Spree::FacebookAccount.find_by(id: params[:facebook_page][:account_id])
             flash[:alert] = 'Account Does Not Exist'
             ## Lets not use this. It has been deprecated in Rails 5.
-            redirect_to :back
+            redirect_back fallback_location: root_path
           end
         end
 
         def fetch_page
           unless @page = Spree::FacebookPage.find_by(id: params[:id])
             flash[:alert] = 'Page Does Not Exist'
-            redirect_to :back
+            redirect_back fallback_location: root_path
           end
         end
 

@@ -29,6 +29,20 @@ account :)
 - You should have account on [Twitter Account](https://apps.twitter.com)
   - Create an App
 
+## Demo
+
+Try Spree Social Media Marketing for Spree master with direct deployment on Heroku:
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/vinsol-spree-contrib/spree-demo-heroku/tree/spree-social-media-marketing-master)
+
+Try Spree Social Media Marketing for Spree 3-4 with direct deployment on Heroku:
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/vinsol-spree-contrib/spree-demo-heroku/tree/spree-social-media-marketing-3-4)
+
+Try Spree Social Media Marketing for Spree 3-1 with direct deployment on Heroku:
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/vinsol-spree-contrib/spree-demo-heroku/tree/spree-social-media-marketing-3-1)
+
 ## Installation
 
 1. Add this extension to your Gemfile with this line:
@@ -54,7 +68,13 @@ account :)
   bundle exec rails g spree_social_media_marketing:install
   ```
 
-3. Set Social Accounts API key credentials in Rails secrets (config/secrets.yml)
+  You can also seed the default marketing events with:
+
+  ```ruby
+  bundle exec rails g spree_social_media_marketing:seed
+  ```
+
+4. Set Social Accounts API key credentials in Rails secrets (config/secrets.yml)
 
   - Facebook
 
@@ -84,7 +104,7 @@ account :)
 
   - **NOTE** : Use the key names same as above :)
 
-4. Restart your server
+5. Restart your server
 
   If your server was running, restart it so that it can find the assets properly.
 

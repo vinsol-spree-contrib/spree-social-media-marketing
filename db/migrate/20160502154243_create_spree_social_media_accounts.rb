@@ -1,4 +1,4 @@
-class CreateSpreeSocialMediaAccounts < ActiveRecord::Migration
+class CreateSpreeSocialMediaAccounts < ActiveRecord::Migration[4.2]
   def change
     create_table :spree_social_media_accounts do |t|
       t.references :store

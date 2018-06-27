@@ -3,9 +3,11 @@ module Spree
   class FacebookPage < ActiveRecord::Base
 
     belongs_to :account, class_name: 'Spree::FacebookAccount', foreign_key: :account_id
-    has_many :posts, as: :social_media_publishable, class_name: 'Spree::SocialMediaPost'
+    has_many :posts, as: :social_media_publishable, class_name: 'Spree::SocialMediaPost', dependent: :destroy
+    has_many :social_media_events_accounts, as: :social_media_marketing_account, dependent: :destroy
+    has_many :social_media_events, through: :social_media_events_accounts, source: :social_media_marketing_event
 
-    validates :page_id, presence: true, uniqueness: {message: 'has already been added'}
+    validates :page_id, presence: true, uniqueness: { message: 'has already been added' }
 
     before_save :get_and_assign_page_access_token
 
@@ -41,12 +43,15 @@ module Spree
       end
 
       def get_and_assign_page_access_token
-        user_graph = Koala::Facebook::API.new(account.auth_token)
-        self.page_token = user_graph.get_page_access_token(page_id)
-        self.page_name = Koala::Facebook::API.new(page_token).get_page(page_id)['name']
-      rescue Koala::Facebook::ClientError => e
-        errors.add(:page_id, "Access token not issued for page due to error #{e.message}")
-        Rails.logger.error("SocialMediaMarketing::SpreeFacebookPage::AssignPageToken Fails with error #{e.message}")
+        begin
+          user_graph = Koala::Facebook::API.new(account.auth_token)
+          self.page_token = user_graph.get_page_access_token(page_id)
+          self.page_name = Koala::Facebook::API.new(page_token).get_page(page_id)['name']
+        rescue Koala::Facebook::ClientError => e
+          Rails.logger.error("SocialMediaMarketing::SpreeFacebookPage::AssignPageToken Fails with error #{e.message}")
+          errors.add(:page_id, "Access token not issued for page due to error: #{e.fb_error_message}")
+          false
+        end
       end
   end
 end

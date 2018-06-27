@@ -5,8 +5,8 @@ Spree::StockMovement.class_eval do
 
   Spree::StockMovement::MARKUP_ALLOWED_METHODS = [:product_name, :product_quantity, :home_page, :product_page]
 
-  def get_social_marketing_message
-    marketing_event.get_parsed_message(self)
+  def get_social_marketing_message(type='facebook')
+    marketing_event.get_parsed_message(self, type)
   end
 
   def product_name
@@ -30,7 +30,7 @@ Spree::StockMovement.class_eval do
   def check_total_stock
     product_total_on_hand = self.stock_item.variant.product.total_on_hand
     if marketing_event && marketing_event.active? && self.stock_item.variant.product.total_on_hand == marketing_event.threshold
-      LowStockProductMarketingJob.perform_later(self.id, product_total_on_hand)
+      LowStockProductMarketingJob.perform_later(self.id, product_total_on_hand, marketing_event)
     end
   end
 end
